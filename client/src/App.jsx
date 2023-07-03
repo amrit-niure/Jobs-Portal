@@ -11,7 +11,7 @@ function App() {
    <div
    className='flex items-center justify-center w-full h-[100vh] font-bold text-light-primary   '
    >
-Lets goo..!
+Lets goo!
    </div>
   )
 }
