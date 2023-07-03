@@ -8,6 +8,9 @@ import helmet from 'helmet'
 import multer from 'multer'
 import path from 'path'
 import { fileURLToPath } from 'url'
+// importing Routes 
+import authRoutes from './routes/authRoutes.js'
+
 const app = express()
 dotenv.config()
 // Using  middlewares 
@@ -35,16 +38,13 @@ const storage = multer.diskStorage({
 // multer middleware to upload files
 const upload = multer({storage: storage});
 
-
 // Routes with multer upload 
 
 
 
 
 // Routes
-
-
-
+app.use('/auth', authRoutes)
 
 
 // Moongoose + server Setup
