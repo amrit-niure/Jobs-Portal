@@ -1,15 +1,26 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+
+} from 'react-router-dom'
+import Login from './scenes/login/Login'
+import MainOutlet from './scenes/outlet/MainOutlet'
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-<div>
-  
-</div>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<MainOutlet />} >
+            <Route index element={<Login />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 
