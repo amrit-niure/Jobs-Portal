@@ -10,7 +10,8 @@ export default {
         light : {
             primary : '#861D88',
             secondary : "#AEB0B4",
-            tertiary : '#F4F5F7'
+            tertiary : '#F4F5F7',
+            lightBackground : "#F4F5F7",
         },
         dark : { 
           // darkmode not configured
@@ -30,6 +31,7 @@ export default {
       fontWeight :{
         thin : '300',
         regular : '400',
+        semiBold : '500',
         bold : '600',
       }
     },
