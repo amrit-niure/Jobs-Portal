@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom'
 import Login from './scenes/login/Login'
 import MainOutlet from './scenes/outlet/MainOutlet'
+import Homepage from './scenes/homePage/Homepage'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route element={<MainOutlet />} >
             <Route index element={<Login />} />
+            <Route path='home' element={<Homepage />} />
           </Route>
         </Routes>
       </BrowserRouter>

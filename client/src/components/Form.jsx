@@ -4,8 +4,11 @@ import * as yup from 'yup'
 import axios from 'axios'
 import Button from './Button'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setLogin } from '../state/index.js'
 const Form = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [pageType, setPageType] = useState("register")
     const isLogin = pageType === "login"
     const isRegister = pageType === "register"
@@ -33,6 +36,10 @@ const login = async (values,onSubmitProps) => {
     try {
         const loggedIn = await axios.post('http://localhost:5000/auth/login',values)
         if(loggedIn.data.success){
+            dispatch(setLogin({
+                user : loggedIn.data.user,
+                token : loggedIn.data.token,
+            }))
         navigate('/home')
         }
     } catch (error) {
@@ -111,7 +118,7 @@ const login = async (values,onSubmitProps) => {
                                         setPageType(isLogin ? 'register' : 'login')
                                         resetForm()
                                     }}
-                                    className='text-sm underline cursor-pointer'
+                                    className='text-sm underline cursor-pointer text-light-primary'
                                 >
                                 {isLogin ? "Don't have an account ? Sign Up" : "Have an account ? Login"}
 
