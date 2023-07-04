@@ -23,7 +23,7 @@ const Form = () => {
 
 const register = async (values,onSubmitProps) => {
     try {
-        const registered = await axios.post('http://localhost:5000/auth/register',values)
+        const registered = await axios.post('http://192.168.0.8:5000/auth/register',values)
         if(registered.data.success){
             setPageType('login')
             onSubmitProps.resetForm()
@@ -34,7 +34,7 @@ const register = async (values,onSubmitProps) => {
 }
 const login = async (values,onSubmitProps) => {
     try {
-        const loggedIn = await axios.post('http://localhost:5000/auth/login',values)
+        const loggedIn = await axios.post('http://192.168.0.8:5000/auth/login',values)
         if(loggedIn.data.success){
             dispatch(setLogin({
                 user : loggedIn.data.user,
@@ -77,7 +77,7 @@ const login = async (values,onSubmitProps) => {
                         <div className='w-full h-[70vh] flex items-center justify-center'>
 
                             <form
-                                className='w-[500px] border-2 py-[2rem] px-[1rem] rounded-md flex flex-col gap-8'
+                                className='w-[300px] md:w-[500px] border-2 py-[2rem] px-[1rem] rounded-md flex flex-col gap-8'
                                 onSubmit={handleSubmit}
                             >
                                 <div
@@ -121,7 +121,6 @@ const login = async (values,onSubmitProps) => {
                                     className='text-sm underline cursor-pointer text-light-primary'
                                 >
                                 {isLogin ? "Don't have an account ? Sign Up" : "Have an account ? Login"}
-
                                 </div>
                             </form>
                         </div>

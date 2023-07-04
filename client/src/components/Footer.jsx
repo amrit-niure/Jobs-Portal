@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
   return (
     <div
-    className='bg-light-primary w-full fixed bottom-0 text-white py-[1rem] text-center'
+    className='h-[4vh] bg-light-primary w-full flex items-center justify-center  text-white text-center'
     >
          &copy; 2023 Jobs Portal. 
     </div>
