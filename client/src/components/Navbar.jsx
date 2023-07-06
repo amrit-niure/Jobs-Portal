@@ -10,9 +10,9 @@ const Navbar = () => {
 
     const navigate = useNavigate()
     return (
-        <div className='h-[7vh]'>
+        <div className='w-full flex items-center justify-center px-[4rem] md:px-[10rem]  h-[7vh]'>
             <nav
-                className='flex justify-between items-center h-full px-[2rem] md:px-[10rem]'
+                className=' w-[70vw] flex justify-between items-center h-full '
             >
                 <div
                     className='text-2xl md:text-3xl font-bold text-light-primary cursor-pointer '
