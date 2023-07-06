@@ -18,11 +18,11 @@ export default {
         }
       },
       screens: {
-        'xsm': '320px',
-        'sm': '640px',
-        'md': '768px',
-        'lg': '1024px',
-        'xl': '1280px',
+        'xsm': '500px',
+        'sm': '650px',
+        'md': '800px',
+        'lg': '1000px',
+        'xl': '1400px',
   
       },
       fontFamily: {
