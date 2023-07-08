@@ -1,4 +1,4 @@
-import { ErrorMessage, Field, Formik } from 'formik'
+import { Formik } from 'formik'
 import React, { useState } from 'react'
 import * as yup from 'yup'
 import axios from 'axios'
@@ -69,7 +69,7 @@ const login = async (values,onSubmitProps) => {
                         values,
                         errors,
                         touched,
-                        handleChange,
+                        handleChange, 
                         handleBlur,
                         resetForm,
                         handleSubmit

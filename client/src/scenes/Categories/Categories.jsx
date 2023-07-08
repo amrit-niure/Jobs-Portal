@@ -4,7 +4,7 @@ import CategoryCard from '../../components/CategoryCard'
 const Categories = () => {
   return (
     <div 
-    className='w-full flex flex-col items-center justify-center px-[4rem] md:px-[10rem] pb-[2rem] gap-8'
+    className='w-full flex flex-col items-center justify-center  pb-[2rem] gap-8'
     >
     <div>
     <h1
