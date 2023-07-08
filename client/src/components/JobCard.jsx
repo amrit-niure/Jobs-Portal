@@ -1,7 +1,10 @@
 import React from 'react'
 import Button from '../components/Button'
+import { useNavigate } from 'react-router-dom'
 const JobCard = () => {
+  const navigate = useNavigate()
   return (
+
     <div className='flex flex-col md:flex-row w-full justify-between items-center border-2 px-[2rem] py-[2rem] md:py-[0.5rem] shadow-md rounded-md gap-4 '>
         <div className='flex gap-4 items-center flex-col md:flex-row'>
         <div
@@ -23,7 +26,7 @@ const JobCard = () => {
             </div>
         </div>
         </div>
-           <div>
+           <div onClick={()=> navigate('../details')}>
             <Button content={"View Details"}/>
         </div>
     </div>

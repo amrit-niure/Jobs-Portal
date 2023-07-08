@@ -4,10 +4,10 @@ import Button from '../../components/Button'
 const Hero = () => {
   return (
     <div 
-    className='w-full flex items-center justify-center px-[4rem] md:px-[10rem] pb-[2rem]'
+    className='w-full h-full  flex items-center justify-center  pb-[2rem]'
     >
     <div
-      className='w-[70vw] flex flex-col-reverse md:flex-row  items-center  gap-4  '
+      className=' w-[70vw] flex flex-col-reverse md:flex-row  items-center  gap-4  '
     >
       {/* Left Side / Bottom Side(mobile) */}
 
