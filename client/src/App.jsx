@@ -9,6 +9,7 @@ import {
 import Login from './scenes/login/Login'
 import MainOutlet from './scenes/outlet/MainOutlet'
 import Homepage from './scenes/homePage/Homepage'
+import Details from './scenes/Details/Details'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route element={<MainOutlet />} >
             <Route index element={<Login />} />
             <Route path='home' element={<Homepage />} />
+            <Route path='details' element={<Details />} />
           </Route>
         </Routes>
       </BrowserRouter>
