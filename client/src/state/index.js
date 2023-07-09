@@ -18,10 +18,15 @@ export const authSlice = createSlice({
         setLogout : (state) => {
             state.user = null
             state.token = null
+            state.jobs = []
+            
         },
+        setJobs: (state,action) =>{
+            state.jobs=action.payload.allJobs
+    }
                
     }
 })
 
-export const {setLogin,setLogout} = authSlice.actions
+export const {setLogin,setLogout,setJobs} = authSlice.actions
 export default authSlice.reducer

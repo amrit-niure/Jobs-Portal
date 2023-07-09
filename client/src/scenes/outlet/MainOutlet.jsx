@@ -6,10 +6,10 @@ import Footer from '../../components/Footer'
 const MainOutlet = ({isAuth,setIsAuth}) => {
     return (
         <div
-            className=''
+           
         >
+            <div  className='min-h-[96vh]'>
             <Navbar isAuth={isAuth} setIsAuth={setIsAuth}/>
-            <div>
                 <Outlet />
             </div>
             <Footer />

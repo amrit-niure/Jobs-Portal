@@ -13,6 +13,7 @@ import Homepage from './scenes/homePage/Homepage'
 import Details from './scenes/Details/Details'
 import CreateJob from './scenes/CreateJob/CreateJob'
 import ErrorPage from './scenes/Error/ErrorPage'
+import MyJobList from './scenes/MyJobList/MyJobList'
 
 
 function App() {
@@ -29,8 +30,9 @@ useEffect(() => {
         <Routes>
           <Route element={<MainOutlet isAuth={isAuth} setIsAuth={setIsAuth}/>} >
             <Route index element={isAuth ? <Homepage /> : <Login />} />
-            <Route path='details' element={isAuth ? <Details /> : <ErrorPage />} />
+            <Route path='details/:id' element={isAuth ? <Details /> : <ErrorPage />} />
             <Route path='createjob' element={isAuth ? <CreateJob /> : <ErrorPage />} />
+            <Route path='alljobs' element={isAuth ? <MyJobList /> : <ErrorPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

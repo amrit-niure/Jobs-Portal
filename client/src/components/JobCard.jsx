@@ -1,8 +1,10 @@
 import React from 'react'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
-const JobCard = () => {
+import { useSelector } from 'react-redux'
+const JobCard = ({job}) => {
   const navigate = useNavigate()
+  
   return (
 
     <div className='flex flex-col md:flex-row w-full justify-between items-center border-2 px-[2rem] py-[2rem] md:py-[0.5rem] shadow-md rounded-md gap-4 '>
@@ -15,19 +17,19 @@ const JobCard = () => {
         <div
         className='text-light-primary flex flex-col'
         >
-           <h2 cls>Match Company Limited</h2>
-           <h1 className='text-xl font-bold'>Fresher UI/UX Designer (Experience)</h1>
+           <h2 cls>{job.company}</h2>
+           <h1 className='text-xl font-bold'>{`${job.title} (${job.experience})`}</h1>
            <div
            className='flex flex-col md:flex-row md:gap-4'
            >
-            <span>Location : Sydney, Australia</span>
-            <span>Full Time</span>
-            <span>Salary : 50,000</span>
+            <span>Location : {job.location}</span>
+            <span>{job.type}</span>
+            <span>Salary : {job.salary}</span>
             </div>
         </div>
         </div>
-           <div onClick={()=> navigate('../details')}>
-            <Button content={"View Details"}/>
+           <div onClick={()=> navigate(`../details/${job._id}`)}>
+            <Button content={"View Details"} />
         </div>
     </div>
   )
