@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import axios from 'axios'
 import Hero from './Hero'
 import PopularJobs from '../popularJobs/PopularJobs'
 import Categories from '../Categories/Categories'
 import Button from '../../components/Button'
-
+import { useDispatch } from 'react-redux'
+import { setJobs } from '../../state'
+import { useNavigate } from 'react-router-dom'
 const Homepage = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  useEffect(()=>{
+const fetchJobs = async() =>{
+  const response = await axios.get('http://192.168.0.8:5000/alljobs')
+  if(response.data.success){
+    dispatch(setJobs({allJobs : response.data.allJobs}))
+  }
+}
+fetchJobs()
+  },[])
   return (
     <div
     className='bg-light-tertiary flex flex-col items-center justify-center'
@@ -17,7 +31,7 @@ const Homepage = () => {
 <Categories />
 <PopularJobs />
 <div className='w-full flex items-center justify-center pb-[2rem]'>
-  <div className='w-[150px]'>
+  <div className='w-[150px]' onClick={()=> navigate('/alljobs')}>
 
   <Button content={"View All Jobs"} outline={true}/>
   </div>
