@@ -9,7 +9,7 @@ import { setLogin } from '../state/index.js'
 const Form = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [pageType, setPageType] = useState("register")
+    const [pageType, setPageType] = useState("login")
     const isLogin = pageType === "login"
     const isRegister = pageType === "register"
     const initialRegisterValues = {
@@ -40,7 +40,7 @@ const login = async (values,onSubmitProps) => {
                 user : loggedIn.data.user,
                 token : loggedIn.data.token,
             }))
-        navigate('/home')
+        navigate('/')
         }
     } catch (error) {
         console.log(error)
