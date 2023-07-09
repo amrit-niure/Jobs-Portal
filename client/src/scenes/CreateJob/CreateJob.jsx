@@ -10,7 +10,9 @@ const CreateJob = () => {
 
   const dispatch = useDispatch()
   const { user } = useSelector((store) => store.userData)
-  console.log()
+  const config ={
+    placeholder : `Write clear Job Description with requirements, qualification and other additional information...`
+  }
   const initialJobValue = {
     jobCreator: `${user._id}`,
     company: '',
@@ -29,8 +31,10 @@ const CreateJob = () => {
   }
   const jobSchema = yup.object().shape({
     jobCreator: yup.string().required("Required"),
-    company: yup.string().required("Required"),
-    website: yup.string().required("Required"),
+    company: yup.string().min(3).required("Required"),
+    website: yup
+    .string()
+    .required("Required"),
     level: yup.string().required("Required"),
     title: yup.string().required("Required"),
     category: yup.string().required("Required"),
@@ -40,7 +44,9 @@ const CreateJob = () => {
     experience: yup.string().required("Required"),
     qualification: yup.string().required("Required"),
     deadline: yup.string().required("Required"),
-    applicationLink: yup.string().required("Required"),
+    applicationLink: yup
+    .string()
+    .required("Required"),
     description: yup.string().required("Required"),
   })
   const handleFormSubmit = async (values, onSubmitProps) => {
@@ -53,20 +59,20 @@ const CreateJob = () => {
           dispatch(setJobs({ allJobs: response.data.allJobs }))
         }
         onSubmitProps.resetForm()
-      
+
       }
     } catch (error) {
       console.log(error)
     }
   }
   return (
-    <div className='text-light-primary'>
+    <div className='text-light-primary w-full'>
       <div
-        className='bg-light-lightBackground px-[5rem] md:px-[10rem] text-xl md:text-2xl text-center py-[1rem] font-semiBold '
+        className='bg-light-lightBackground  text-xl md:text-2xl text-center py-[1rem] font-semiBold '
       >
         <h2 className=''>Create a Job</h2>
       </div>
-      <div className='w-full'>
+      <div >
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialJobValue}
@@ -86,7 +92,7 @@ const CreateJob = () => {
 
               <form
                 onSubmit={handleSubmit}
-                className=' border-2 max-w-[1000px] w-[70vw] py-[2rem] px-[1rem] rounded-md flex flex-col gap-8'
+                className=' border-2 max-w-[1000px] w-[90vw] py-[2rem] px-[1rem] rounded-md flex flex-col gap-8'
               >
                 <div
                   className='flex w-full flex-col gap-2'
@@ -119,7 +125,7 @@ const CreateJob = () => {
                       value={values.company}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder='Name'
+                      placeholder="Name of Employeer's Organization "
                       className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                     />
                     {touched.company && errors.company ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.company} </div>) : null}
@@ -131,18 +137,19 @@ const CreateJob = () => {
                     <label htmlFor="website" className='text-lg  text-light-primary'>Company Website<span className="text-red-500">*</span></label>
                     <input
                       type="text"
+                      pattern="(http://.+)|(https://.+)|(www..+)"
                       id='website'
                       name='website'
                       value={values.website}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder='Website Link'
+                      placeholder='https://example.com'
                       className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                     />
                     {touched.website && errors.website ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.website} </div>) : null}
                   </div>
                 </div>
-                <div>
+                <div  className='flex gap-4 flex-col md:flex-row md:gap-8'>
 
                   <div
                     className='flex w-full flex-col gap-2'
@@ -155,7 +162,7 @@ const CreateJob = () => {
                       value={values.level}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder='Level'
+                      placeholder='Junior, Mid, Senior'
                       className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                     />
                     {touched.level && errors.level ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.level} </div>) : null}
@@ -180,42 +187,59 @@ const CreateJob = () => {
                 </div>
 
 
-                <div>
+                <div  className='flex gap-4 flex-col md:flex-row md:gap-8'>
                   <div
                     className='flex w-full flex-col gap-2'
                   >
                     <label htmlFor="title" className='text-lg  text-light-primary'>Job Category<span className="text-red-500">*</span></label>
-                    <input
-                      type="text"
-                      id='category'
-                      name='category'
+                    <select  className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                       value={values.category}
+                      name='category'
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder='Category'
-                      className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
-                    />
+                    >
+                      <option value="" disabled selected>Category</option>
+                      <option value="Information Technology(IT)">Information Technology(IT)</option>
+                      <option value="Sales and Marketing">Sales and Marketing</option>
+                      <option value="Hospitality and Tourism">Hospitality and Tourism</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Healthcare and Medical">Healthcare and Medical</option>
+                      <option value="Support Worker">Support Worker</option>
+                      <option value="Administrative and Clerical">Administrative and Clerical</option>
+                      <option value="Education and Teaching">Education and Teaching</option>
+                      <option value="Finance and Accounting">Finance and Accounting</option>
+                      <option value="Customer Service">Customer Service</option>
+                      <option value="Manufacturing and Production">Manufacturing and Production</option>
+                      <option value="Legal">Legal</option>
+                      <option value="Media and Communication">Media and Communication</option>
+                      <option value="Human Resources">Human Resources</option>
+                      <option value="Research and Development">Research and Development</option>
+                      <option value="Social Services">Social Services</option>
+                      <option value="Others">Others</option>
+                    </select>
                     {touched.category && errors.category ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.category} </div>) : null}
                   </div>
 
                   <div
                     className='flex w-full flex-col gap-2'
                   >
-                    <label htmlFor="title" className='text-lg  text-light-primary'>Job Type<span className="text-red-500">*</span></label>
-                    <input
-                      type="text"
-                      id='type'
-                      name='type'
+                    <label htmlFor="type" className='text-lg  text-light-primary'>Job Type<span className="text-red-500">*</span></label>
+                    <select  className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                       value={values.type}
+                      name='type'
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder='Category'
-                      className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
-                    />
+                    >
+                      <option value="" disabled selected>Type</option>
+                      <option value="Full-Time">Full-Time</option>
+                      <option value="Part-Time">Part-Time</option>
+                      <option value="Freelancing">Freelancing</option>
+                      <option value="Contract">Contract</option>
+                    </select>
                     {touched.type && errors.type ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.type} </div>) : null}
                   </div>
                 </div>
-                <div>
+                <div  className='flex gap-4 flex-col md:flex-row md:gap-8'>
                   <div
                     className='flex w-full flex-col gap-2'
                   >
@@ -255,16 +279,22 @@ const CreateJob = () => {
                     className='flex w-full flex-col gap-2'
                   >
                     <label htmlFor="title" className='text-lg  text-light-primary'>Experience <span className="text-red-500">*</span></label>
-                    <input
-                      type="text"
-                      id='experience'
-                      name='experience'
+                    <select  className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                       value={values.experience}
+                      name='experience'
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder='Experience'
-                      className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
-                    />
+                    >
+                      <option value="" disabled selected>Experience</option>
+                      <option value="Fresher/Intern">Fresher/Intern</option>
+                      <option value="One Year">One Year</option>
+                      <option value="Two Years">Two Years</option>
+                      <option value="Three Years">Three Years</option>
+                      <option value="Less Than Five Years">Less Than Five Years</option>
+                      <option value="Five Years +">Five Years +</option>
+                      <option value="A Decade">A Decade</option>
+                      <option value="More Than A Decade">More Than A Decade</option>
+                    </select>
                     {touched.experience && errors.experience ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.experience} </div>) : null}
                   </div>
 
@@ -279,7 +309,7 @@ const CreateJob = () => {
                       value={values.qualification}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder='Qualification'
+                      placeholder='Diploma,Graduate, Masters, PHD, Research Level,Not Needed'
                       className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                     />
                     {touched.qualification && errors.qualification ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.qualification} </div>) : null}
@@ -309,10 +339,11 @@ const CreateJob = () => {
                     type="text"
                     id='applicationLink'
                     name='applicationLink'
+                    pattern="(http://.+)|(https://.+)|(www..+)"
                     value={values.applicationLink}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder='Application Link'
+                    placeholder='https://example.com/careers'
                     className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                   />
                   {touched.applicationLink && errors.applicationLink ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.applicationLink} </div>) : null}
@@ -335,12 +366,10 @@ const CreateJob = () => {
                   {touched.description && errors.description ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.description} </div>) : null}
  */}
 
-
-
-
                   <div>
                     <JoditEditor
                       name="description"
+                      config={config}
                       value={values.description}
                       onChange={(value) => setFieldValue('description', value)}
                     />

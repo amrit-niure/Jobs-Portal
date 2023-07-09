@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 // importing Routes 
 import authRoutes from './routes/authRoutes.js'
 import createJobRoute from './routes/createJobRoute.js'
+import getJobsRoute from './routes/getJobsRoute.js'
 
 const app = express()
 dotenv.config()
@@ -47,6 +48,7 @@ const upload = multer({storage: storage});
 // Routes
 app.use('/auth', authRoutes)
 app.use('/createjob', createJobRoute)
+app.use('/alljobs',getJobsRoute )
 
 
 // Moongoose + server Setup
