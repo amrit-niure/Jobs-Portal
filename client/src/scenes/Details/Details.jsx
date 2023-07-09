@@ -40,8 +40,8 @@ const Details = () => {
                     <div>
                         <ul className='text-light-primary'>
                             <li><span className='font-bold text-light-primary'>Minimum Qualification : </span> <span>{thisJob.qualification}</span></li>
-                            <li><span className='font-bold text-light-primary'>Exprience Level : </span> <span>{thisJob.level}</span></li>
-                            <li><span className='font-bold text-light-primary'>Experience Length : </span> <span>{thisJob.experience}</span></li>
+                            <li><span className='font-bold text-light-primary'>Level : </span> <span>{thisJob.level}</span></li>
+                            <li><span className='font-bold text-light-primary'>Experience : </span> <span>{thisJob.experience}</span></li>
                             <li><span className='font-bold text-light-primary'>Location  : </span> <span>{thisJob.location}</span></li>
                             <li><span className='font-bold text-light-primary'>Application Deadline  : </span> <span>{thisJob.deadline.split('T')[0]}</span></li>
                             <li><span className='font-bold text-light-primary'>Annual Salary Range : </span> <span>{thisJob.salary}</span></li>
