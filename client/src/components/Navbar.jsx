@@ -1,14 +1,24 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { BiLogInCircle } from 'react-icons/bi'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import Button from './Button'
-const Navbar = () => {
+import { setLogout } from '../state'
+const Navbar = ({isAuth,setIsAuth}) => {
 
     const [mobileMenu, setMobileMenu] = React.useState(false)
-
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    // const [isAuth, setIsAuth] = useState(false)
+    const { token } = useSelector((store) => store.userData)
+    useEffect(() => {
+        if (token) {
+            setIsAuth(true)
+        }
+    }, [token])
+
+
     return (
         <div className='w-full flex items-center justify-center px-[4rem] md:px-[10rem]  h-[7vh] py-[2rem]'>
             <nav
@@ -16,7 +26,7 @@ const Navbar = () => {
             >
                 <div
                     className='text-2xl md:text-3xl font-bold text-light-primary cursor-pointer '
-                    onClick={() => navigate('/home')}
+                    onClick={() => navigate('/')}
                 >
                     Jobs Portal
                 </div>
@@ -24,14 +34,26 @@ const Navbar = () => {
                 <div
                     className='hidden gap-4 md:flex '
                 >
-                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'
-                    onClick={()=> navigate('/')}
+                    {isAuth ? (<div className='flex items-center gap-2 text-light-primary cursor-pointer'
+                        onClick={() => {
+                            dispatch(setLogout())
+                            setIsAuth(false)
+                        }
+                        }
                     >
-                        <BiLogInCircle className='text-xl'/>
+                        <BiLogInCircle className='text-xl' />
                         <h4
-                        >Login</h4>
-                    </div>
-                    <div onClick={()=> navigate('../createjob')}>
+                        >Logout</h4>
+                    </div>) : (
+                        <div className='flex items-center gap-2 text-light-primary cursor-pointer'
+                            onClick={() => navigate('/')}
+                        >
+                            <BiLogInCircle className='text-xl' />
+                            <h4
+                            >Login</h4>
+                        </div>
+                    )}
+                    <div onClick={() => navigate('../createjob')}>
                         <Button content={"Post a Job"} />
                     </div>
                 </div>
@@ -45,20 +67,36 @@ const Navbar = () => {
                 {mobileMenu &&
                     <div
                         className='absolute right-[5rem] top-[50px] bg-light-tertiary p-[1rem] rounded-md'
-                    > 
+                    >
                         <div
                             className='flex flex-col gap-4'
                         >
-                            <div className='flex items-center gap-2 text-light-primary cursor-pointer'>
+                            {isAuth ? (<div className='flex items-center gap-2 text-light-primary cursor-pointer'>
                                 <BiLogInCircle className='text-xl' />
                                 <h4
-                                     onClick={() => {setMobileMenu(false)
-                                        navigate('/')}}
-                                >Login</h4>
-                            </div>
+                                    onClick={() => {
+                                        setMobileMenu(false)
+                                        dispatch(setLogout())
+                                        setIsAuth(false)
+                                        navigate('/')
+                                    }}
+                                >Logout</h4>
+                            </div>) : (
+                                <div className='flex items-center gap-2 text-light-primary cursor-pointer'>
+                                    <BiLogInCircle className='text-xl' />
+                                    <h4
+                                        onClick={() => {
+                                            setMobileMenu(false)
+                                            navigate('/')
+                                        }}
+                                    >Login</h4>
+                                </div>
+                            )}
                             <div
-                                onClick={() => {setMobileMenu(false)
-                                     navigate('/createjob')}}
+                                onClick={() => {
+                                    setMobileMenu(false)
+                                    navigate('/createjob')
+                                }}
                             >
                                 <Button content={"Post a Job"} />
                             </div>

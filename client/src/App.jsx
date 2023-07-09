@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import './App.css'
 import {
   BrowserRouter,
@@ -6,23 +6,31 @@ import {
   Routes,
 
 } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Login from './scenes/login/Login'
 import MainOutlet from './scenes/outlet/MainOutlet'
 import Homepage from './scenes/homePage/Homepage'
 import Details from './scenes/Details/Details'
 import CreateJob from './scenes/CreateJob/CreateJob'
+import ErrorPage from './scenes/Error/ErrorPage'
 
 
 function App() {
+  const [isAuth,setIsAuth] = useState(false)
+  const {token} =useSelector((store)=> store.userData)
+useEffect(() => {
+  if (token) {
+    setIsAuth(true)
+  }
+}, [token])
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route element={<MainOutlet />} >
-            <Route index element={<Login />} />
-            <Route path='home' element={<Homepage />} />
-            <Route path='details' element={<Details />} />
-            <Route path='createjob' element={<CreateJob />} />
+          <Route element={<MainOutlet isAuth={isAuth} setIsAuth={setIsAuth}/>} >
+            <Route index element={isAuth ? <Homepage /> : <Login />} />
+            <Route path='details' element={isAuth ? <Details /> : <ErrorPage />} />
+            <Route path='createjob' element={isAuth ? <CreateJob /> : <ErrorPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
