@@ -34,11 +34,19 @@ const Navbar = ({isAuth,setIsAuth}) => {
                     className='hidden gap-4 md:flex '
                 >
                     <div className='flex items-center gap-2 text-light-primary cursor-pointer'  onClick={() => {
+                          navigate('/alljobs')
+                        }}>
+                        <h3>All Jobs</h3>
+                    </div>
+                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'  onClick={() => {
                           navigate('/listedjobs')
                         }}>
-                        <h3>Listed Jobs</h3>
+                        <h3>My Listing</h3>
                     </div>
-                    {isAuth ? (<div className='flex items-center gap-2 text-light-primary cursor-pointer'
+                    {isAuth ? (
+                    
+                    
+                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'
                         onClick={() => {
                             dispatch(setLogout())
                             setIsAuth(false)
