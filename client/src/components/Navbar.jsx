@@ -10,7 +10,6 @@ const Navbar = ({isAuth,setIsAuth}) => {
     const [mobileMenu, setMobileMenu] = React.useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    // const [isAuth, setIsAuth] = useState(false)
     const { token } = useSelector((store) => store.userData)
     useEffect(() => {
         if (token) {
@@ -34,7 +33,20 @@ const Navbar = ({isAuth,setIsAuth}) => {
                 <div
                     className='hidden gap-4 md:flex '
                 >
-                    {isAuth ? (<div className='flex items-center gap-2 text-light-primary cursor-pointer'
+                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'  onClick={() => {
+                          navigate('/alljobs')
+                        }}>
+                        <h3>All Jobs</h3>
+                    </div>
+                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'  onClick={() => {
+                          navigate('/listedjobs')
+                        }}>
+                        <h3>My Listing</h3>
+                    </div>
+                    {isAuth ? (
+                    
+                    
+                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'
                         onClick={() => {
                             dispatch(setLogout())
                             setIsAuth(false)
