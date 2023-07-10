@@ -53,6 +53,7 @@ app.use('/createjob', createJobRoute)
 app.use('/alljobs',getJobsRoute )
 app.use('/listedjobs',getListingRoute )
 app.use('/filter',filterRoutes )
+// app.use('/filters',filterRoutes )
 
 
 // Moongoose + server Setup
