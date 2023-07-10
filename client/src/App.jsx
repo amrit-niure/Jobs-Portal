@@ -14,6 +14,7 @@ import Details from './scenes/Details/Details'
 import CreateJob from './scenes/CreateJob/CreateJob'
 import ErrorPage from './scenes/Error/ErrorPage'
 import MyJobList from './scenes/MyJobList/MyJobList'
+import ListedJobs from './scenes/Listed Jobs/ListedJobs'
 
 
 function App() {
@@ -33,6 +34,7 @@ useEffect(() => {
             <Route path='details/:id' element={isAuth ? <Details /> : <ErrorPage />} />
             <Route path='createjob' element={isAuth ? <CreateJob /> : <ErrorPage />} />
             <Route path='alljobs' element={isAuth ? <MyJobList /> : <ErrorPage />} />
+            <Route path='listedjobs' element={isAuth ? <ListedJobs /> : <ErrorPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -51,6 +51,7 @@ const CreateJob = () => {
   })
   const handleFormSubmit = async (values, onSubmitProps) => {
     try {
+      console.log(values)
       const create = await axios.post('http://192.168.0.8:5000/createjob', values)
       if (create.data.success) {
         alert("Job Posted Sucessfully.")
@@ -199,7 +200,7 @@ const CreateJob = () => {
                       onBlur={handleBlur}
                     >
                       <option value="" disabled selected>Category</option>
-                      <option value="Information Technology(IT)">Information Technology(IT)</option>
+                      <option value="Information Technology (IT)">Information Technology(IT)</option>
                       <option value="Sales and Marketing">Sales and Marketing</option>
                       <option value="Hospitality and Tourism">Hospitality and Tourism</option>
                       <option value="Engineering">Engineering</option>
