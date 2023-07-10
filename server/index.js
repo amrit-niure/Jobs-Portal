@@ -12,6 +12,8 @@ import { fileURLToPath } from 'url'
 import authRoutes from './routes/authRoutes.js'
 import createJobRoute from './routes/createJobRoute.js'
 import getJobsRoute from './routes/getJobsRoute.js'
+import getListingRoute from './routes/getListingRoute.js'
+import filterRoutes from './routes/filterRoutes.js'
 
 const app = express()
 dotenv.config()
@@ -49,6 +51,8 @@ const upload = multer({storage: storage});
 app.use('/auth', authRoutes)
 app.use('/createjob', createJobRoute)
 app.use('/alljobs',getJobsRoute )
+app.use('/listedjobs',getListingRoute )
+app.use('/filter',filterRoutes )
 
 
 // Moongoose + server Setup
