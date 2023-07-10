@@ -10,7 +10,7 @@ const Navbar = ({isAuth,setIsAuth}) => {
     const [mobileMenu, setMobileMenu] = React.useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { token } = useSelector((store) => store.userData)
+    const { token,user } = useSelector((store) => store.userData)
     useEffect(() => {
         if (token) {
             setIsAuth(true)
@@ -39,7 +39,7 @@ const Navbar = ({isAuth,setIsAuth}) => {
                         <h3>All Jobs</h3>
                     </div>
                     <div className='flex items-center gap-2 text-light-primary cursor-pointer'  onClick={() => {
-                          navigate('/listedjobs')
+                          navigate(`/listedjobs/${user._id}`)
                         }}>
                         <h3>My Listing</h3>
                     </div>
