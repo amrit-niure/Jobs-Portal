@@ -14,6 +14,7 @@ import createJobRoute from './routes/createJobRoute.js'
 import getJobsRoute from './routes/getJobsRoute.js'
 import getListingRoute from './routes/getListingRoute.js'
 import filterRoutes from './routes/filterRoutes.js'
+import deleteJobRoute from './routes/deleteJobRoute.js'
 
 const app = express()
 dotenv.config()
@@ -53,7 +54,8 @@ app.use('/createjob', createJobRoute)
 app.use('/alljobs',getJobsRoute )
 app.use('/listedjobs',getListingRoute )
 app.use('/filter',filterRoutes )
-// app.use('/filters',filterRoutes )
+app.use('/delete',deleteJobRoute)
+
 
 
 // Moongoose + server Setup
