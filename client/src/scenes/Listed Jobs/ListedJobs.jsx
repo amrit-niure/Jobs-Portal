@@ -1,14 +1,18 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
+import Table from './Table';
+
 
 const ListedJobs = () => {
+
+
   return (
     <div className="text-light-primary">
       <div className="bg-light-lightBackground text-xl md:text-2xl text-center py-[1rem] font-semiBold">
         <h2>Listed Jobs</h2>
       </div>
-      <div className="w-full flex items-center justify-center p-[2rem]">
-        <div className="rounded-lg overflow-hidden">
-          <table className="w-[70vw] bg-white border border-gray-200 ">
+      <div className="w-full flex items-center justify-center p-[2rem] text-light-primary">
+        <div className=" rounded-lg">
+          {/* <table className="w-[70vw] bg-white border border-gray-200 ">
             <thead className="bg-gray-100 border-b text-lg">
               <tr className="border-2">
                 <th className="border-r py-[1rem] px-4 text-left">Job Title</th>
@@ -33,9 +37,10 @@ const ListedJobs = () => {
                 <td className="border-r py-[1rem] px-4">Data 7</td>
                 <td className="border-r py-[1rem] px-4">Data 8</td>
               </tr>
-              {/* Add more rows as needed */}
+             
             </tbody>
-          </table>
+          </table> */}
+        <Table  />
         </div>
       </div>
     </div>
