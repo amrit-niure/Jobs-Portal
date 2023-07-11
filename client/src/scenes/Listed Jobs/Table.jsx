@@ -15,10 +15,22 @@ const columns = [
     editable: true,
   },
   {
-    field: 'website',
-    headerName: 'Website',
+    field: 'title',
+    headerName: 'Title',
     width: 150,
     editable: true,
+  },
+  {
+    field: 'type',
+    headerName: 'Type',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'deadline',
+    headerName: 'Deadline',
+    width: 150,
+    editable: true, 
   },
 ];
 
@@ -46,11 +58,13 @@ export default function Table() {
     return <div>Loading...</div>;
   }
   console.log(row)
+
   return (
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={row}
         columns={columns}
+      
         initialState={{
           pagination: {
             paginationModel: {
