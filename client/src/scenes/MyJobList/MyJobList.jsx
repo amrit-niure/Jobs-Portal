@@ -1,7 +1,23 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { useSelector } from 'react-redux'
 import JobCard from '../../components/JobCard'
+import { useDispatch } from 'react-redux'
+import { setJobs } from '../../state'
+import axios from 'axios'
+
 const MyJobList = () => {
+  const dispatch = useDispatch()
+ useEffect(()=>{
+const fetchJobs = async() =>{
+  // const response = await axios.get('http://192.168.0.8:5000/alljobs')
+  const response = await axios.get('http://10.35.0.165:5000/alljobs')
+  if(response.data.success){
+    dispatch(setJobs({allJobs : response.data.allJobs}))
+  }
+}
+fetchJobs()
+  },[])
+
     const { jobs } = useSelector((store) => store.userData)
     return (
         <div className='text-light-primary '>

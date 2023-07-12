@@ -23,7 +23,8 @@ const Form = () => {
 
 const register = async (values,onSubmitProps) => {
     try {
-        const registered = await axios.post('http://192.168.0.8:5000/auth/register',values)
+        // const registered = await axios.post('http://192.168.0.8:5000/auth/register',values)
+        const registered = await axios.post('http://10.35.0.165:5000/auth/register',values)
         if(registered.data.success){
             setPageType('login')
             onSubmitProps.resetForm()
@@ -34,7 +35,8 @@ const register = async (values,onSubmitProps) => {
 }
 const login = async (values,onSubmitProps) => {
     try {
-        const loggedIn = await axios.post('http://192.168.0.8:5000/auth/login',values)
+        // const loggedIn = await axios.post('http://192.168.0.8:5000/auth/login',values)
+        const loggedIn = await axios.post('http://10.35.0.165:5000/auth/login',values)
         if(loggedIn.data.success){
             dispatch(setLogin({
                 user : loggedIn.data.user,

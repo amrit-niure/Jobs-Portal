@@ -1,19 +1,33 @@
 import { Formik } from 'formik'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import * as yup from 'yup'
 import axios from 'axios'
 import Button from '../../components/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import { setJobs } from '../../state'
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import JoditEditor, { Jodit } from 'jodit-react'
 const CreateJob = () => {
+  const navigate = useNavigate()
+  const { id } = useParams();
+  console.log(id)
+  const isUpdate = Boolean(id);
+  // const isUpdate = false
+  
+  console.log(isUpdate)
+  const { user, jobs } = useSelector((store) => store.userData)
+  const updateJob = isUpdate ? jobs.find((item) => item._id === id) : null
+  console.log(updateJob)
 
   const dispatch = useDispatch()
-  const { user } = useSelector((store) => store.userData)
-  const config ={
-    placeholder : `Write clear Job Description with requirements, qualification and other additional information...`
+
+  const config = {
+    placeholder: `Write clear Job Description with requirements, qualification and other additional information...`
   }
-  const initialJobValue = {
+
+
+  const initialValues =!updateJob ? {
     jobCreator: `${user._id}`,
     company: '',
     website: '',
@@ -28,13 +42,29 @@ const CreateJob = () => {
     deadline: '',
     applicationLink: '',
     description: '',
+  }:{
+    jobCreator: `${user._id}`,
+    company: `${updateJob.company}`,
+    website: `${updateJob.website}`,
+    level: `${updateJob.level}`,
+    title: `${updateJob.title}`,
+    category: `${updateJob.category}`,
+    type: `${updateJob.type}`,
+    location: `${updateJob.location}`,
+    salary: `${updateJob.salary}`,
+    experience: `${updateJob.experience}`,
+    qualification: `${updateJob.qualification}`,
+    deadline: `${updateJob.deadline}`,
+    applicationLink: `${updateJob.applicationLink}`,
+    description: `${updateJob.description}`,
   }
+
   const jobSchema = yup.object().shape({
     jobCreator: yup.string().required("Required"),
     company: yup.string().min(3).required("Required"),
     website: yup
-    .string()
-    .required("Required"),
+      .string()
+      .required("Required"),
     level: yup.string().required("Required"),
     title: yup.string().required("Required"),
     category: yup.string().required("Required"),
@@ -45,17 +75,20 @@ const CreateJob = () => {
     qualification: yup.string().required("Required"),
     deadline: yup.string().required("Required"),
     applicationLink: yup
-    .string()
-    .required("Required"),
+      .string()
+      .required("Required"),
     description: yup.string().required("Required"),
   })
-  const handleFormSubmit = async (values, onSubmitProps) => {
+
+  const createJob = async (values,onSubmitProps) => {
     try {
       console.log(values)
-      const create = await axios.post('http://192.168.0.8:5000/createjob', values)
+      // const create = await axios.post('http://192.168.0.8:5000/createjob', values)
+      const create = await axios.post('http://10.35.0.165:5000/createjob', values)
       if (create.data.success) {
         alert("Job Posted Sucessfully.")
-        const response = await axios.get('http://192.168.0.8:5000/alljobs')
+        // const response = await axios.get('http://192.168.0.8:5000/alljobs')
+        const response = await axios.get('http://10.35.0.165:5000/alljobs')
         if (response.data.success) {
           dispatch(setJobs({ allJobs: response.data.allJobs }))
         }
@@ -66,6 +99,36 @@ const CreateJob = () => {
       console.log(error)
     }
   }
+  const updatedJob = async (values,onSubmitProps) => {
+    try {
+      console.log(values)
+      // const create = await axios.post('http://192.168.0.8:5000/createjob', values)
+      const create = await axios.put(`http://10.35.0.165:5000/update/${updateJob._id}`, values)
+      if (create.data.success) {
+        alert("Job updated Sucessfully.")
+        // const response = await axios.get('http://192.168.0.8:5000/alljobs')
+        const response = await axios.get('http://10.35.0.165:5000/alljobs')
+        if (response.data.success) {
+          dispatch(setJobs({ allJobs: response.data.allJobs }))
+        }
+        onSubmitProps.resetForm()
+navigate(`/listedjobs/${updateJob.jobCreator}`)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+    const handleFormSubmit = async (values, onSubmitProps) => {
+      if (!isUpdate) {
+        await createJob(values, onSubmitProps);
+      } else {
+        await updatedJob(values, onSubmitProps); // Replace this with your logic for updating the job
+      }
+    };
+    
+ 
   return (
     <div className='text-light-primary w-full'>
       <div
@@ -76,7 +139,7 @@ const CreateJob = () => {
       <div >
         <Formik
           onSubmit={handleFormSubmit}
-          initialValues={initialJobValue}
+          initialValues={initialValues}
           validationSchema={jobSchema}
         >
           {({
@@ -138,7 +201,7 @@ const CreateJob = () => {
                     <label htmlFor="website" className='text-lg  text-light-primary'>Company Website<span className="text-red-500">*</span></label>
                     <input
                       type="text"
-                      pattern="(http://.+)|(https://.+)|(www..+)"
+                      // pattern="(http://.+)|(https://.+)|(www..+)"
                       id='website'
                       name='website'
                       value={values.website}
@@ -150,7 +213,7 @@ const CreateJob = () => {
                     {touched.website && errors.website ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.website} </div>) : null}
                   </div>
                 </div>
-                <div  className='flex gap-4 flex-col md:flex-row md:gap-8'>
+                <div className='flex gap-4 flex-col md:flex-row md:gap-8'>
 
                   <div
                     className='flex w-full flex-col gap-2'
@@ -188,19 +251,19 @@ const CreateJob = () => {
                 </div>
 
 
-                <div  className='flex gap-4 flex-col md:flex-row md:gap-8'>
+                <div className='flex gap-4 flex-col md:flex-row md:gap-8'>
                   <div
                     className='flex w-full flex-col gap-2'
                   >
                     <label htmlFor="title" className='text-lg  text-light-primary'>Job Category<span className="text-red-500">*</span></label>
-                    <select  className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
+                    <select className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                       value={values.category}
                       name='category'
                       onChange={handleChange}
                       onBlur={handleBlur}
                     >
                       <option value="" disabled selected>Category</option>
-                      <option value="Information Technology (IT)">Information Technology(IT)</option>
+                      <option value="Information Technology(IT)">Information Technology(IT)</option>
                       <option value="Sales and Marketing">Sales and Marketing</option>
                       <option value="Hospitality and Tourism">Hospitality and Tourism</option>
                       <option value="Engineering">Engineering</option>
@@ -225,7 +288,7 @@ const CreateJob = () => {
                     className='flex w-full flex-col gap-2'
                   >
                     <label htmlFor="type" className='text-lg  text-light-primary'>Job Type<span className="text-red-500">*</span></label>
-                    <select  className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
+                    <select className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                       value={values.type}
                       name='type'
                       onChange={handleChange}
@@ -240,7 +303,7 @@ const CreateJob = () => {
                     {touched.type && errors.type ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.type} </div>) : null}
                   </div>
                 </div>
-                <div  className='flex gap-4 flex-col md:flex-row md:gap-8'>
+                <div className='flex gap-4 flex-col md:flex-row md:gap-8'>
                   <div
                     className='flex w-full flex-col gap-2'
                   >
@@ -280,7 +343,7 @@ const CreateJob = () => {
                     className='flex w-full flex-col gap-2'
                   >
                     <label htmlFor="title" className='text-lg  text-light-primary'>Experience <span className="text-red-500">*</span></label>
-                    <select  className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
+                    <select className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                       value={values.experience}
                       name='experience'
                       onChange={handleChange}
@@ -340,7 +403,7 @@ const CreateJob = () => {
                     type="text"
                     id='applicationLink'
                     name='applicationLink'
-                    pattern="(http://.+)|(https://.+)|(www..+)"
+                    // pattern="(http://.+)|(https://.+)|(www..+)"
                     value={values.applicationLink}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -355,17 +418,17 @@ const CreateJob = () => {
                   <label htmlFor="title" className='text-lg  text-light-primary'>Job Description<span className="text-red-500">*</span></label>
 
                   {/* <textarea
-                    type="text"
-                    id='description'
-                    name='description'
-                    value={values.description}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    placeholder='Job Description'
-                    className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary h-32 max-h-[1000px]'
-                  />
-                  {touched.description && errors.description ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.description} </div>) : null}
- */}
+                      type="text"
+                      id='description'
+                      name='description'
+                      value={values.description}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder='Job Description'
+                      className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary h-32 max-h-[1000px]'
+                    />
+                    {touched.description && errors.description ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.description} </div>) : null}
+  */}
 
                   <div>
                     <JoditEditor

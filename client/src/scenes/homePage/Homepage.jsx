@@ -12,7 +12,8 @@ const Homepage = () => {
   const navigate = useNavigate()
   useEffect(()=>{
 const fetchJobs = async() =>{
-  const response = await axios.get('http://192.168.0.8:5000/alljobs')
+  // const response = await axios.get('http://192.168.0.8:5000/alljobs')
+  const response = await axios.get('http://10.35.0.165:5000/alljobs')
   if(response.data.success){
     dispatch(setJobs({allJobs : response.data.allJobs}))
   }
