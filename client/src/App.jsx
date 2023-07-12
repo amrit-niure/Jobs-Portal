@@ -33,6 +33,7 @@ useEffect(() => {
             <Route index element={isAuth ? <Homepage /> : <Login />} />
             <Route path='details/:id' element={isAuth ? <Details /> : <ErrorPage />} />
             <Route path='createjob' element={isAuth ? <CreateJob /> : <ErrorPage />} />
+            <Route path='createjob/:id' element={isAuth ? <CreateJob /> : <ErrorPage />} />
             <Route path='alljobs' element={isAuth ? <MyJobList /> : <ErrorPage />} />
             <Route path='listedjobs/:userId' element={isAuth ? <ListedJobs /> : <ErrorPage />} />
           </Route>
