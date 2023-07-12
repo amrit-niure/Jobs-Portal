@@ -6,9 +6,10 @@ import Button from '../../components/Button'
 import { useDispatch, useSelector } from 'react-redux'
 import { setJobs } from '../../state'
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import JoditEditor, { Jodit } from 'jodit-react'
 const CreateJob = () => {
-
+  const navigate = useNavigate()
   const { id } = useParams();
   console.log(id)
   const isUpdate = Boolean(id);
@@ -78,7 +79,8 @@ const CreateJob = () => {
       .required("Required"),
     description: yup.string().required("Required"),
   })
-  const handleFormSubmit = async (values, onSubmitProps) => {
+
+  const createJob = async (values,onSubmitProps) => {
     try {
       console.log(values)
       // const create = await axios.post('http://192.168.0.8:5000/createjob', values)
@@ -97,6 +99,36 @@ const CreateJob = () => {
       console.log(error)
     }
   }
+  const updatedJob = async (values,onSubmitProps) => {
+    try {
+      console.log(values)
+      // const create = await axios.post('http://192.168.0.8:5000/createjob', values)
+      const create = await axios.put(`http://10.35.0.165:5000/update/${updateJob._id}`, values)
+      if (create.data.success) {
+        alert("Job updated Sucessfully.")
+        // const response = await axios.get('http://192.168.0.8:5000/alljobs')
+        const response = await axios.get('http://10.35.0.165:5000/alljobs')
+        if (response.data.success) {
+          dispatch(setJobs({ allJobs: response.data.allJobs }))
+        }
+        onSubmitProps.resetForm()
+navigate(`/listedjobs/${updateJob.jobCreator}`)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+    const handleFormSubmit = async (values, onSubmitProps) => {
+      if (!isUpdate) {
+        await createJob(values, onSubmitProps);
+      } else {
+        await updatedJob(values, onSubmitProps); // Replace this with your logic for updating the job
+      }
+    };
+    
+ 
   return (
     <div className='text-light-primary w-full'>
       <div

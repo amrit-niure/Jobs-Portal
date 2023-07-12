@@ -46,7 +46,7 @@ const jobSchema = mongoose.Schema({
     },
     experience: {
         type: String,
-        enum: ['Fresher/Intern', 'One Year', 'Two Years', 'Three Years', 'Less Than Five years', 'Five Years +', 'A Decade', 'More Than A Decade'],
+        enum: ['Fresher/Intern', 'One Year', 'Two Years', 'Three Years', 'Less Than Five Years', 'Five Years +', 'A Decade', 'More Than A Decade'],
         required: true
     },
     qualification: {

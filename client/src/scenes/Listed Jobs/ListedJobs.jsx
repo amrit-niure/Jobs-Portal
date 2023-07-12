@@ -42,7 +42,6 @@ const handelDelete = async (id) => {
 
 }
 
-
   return (
     <div className="text-light-primary">
       <div className="bg-light-lightBackground text-xl md:text-2xl text-center py-[1rem] font-semiBold">
@@ -79,7 +78,7 @@ const handelDelete = async (id) => {
                     </IconButton>
                   </Tooltip>
                 </div>
-                <div>
+                <div onClick={() => navigate(`/createjob/${item._id}`)}>
                   <Tooltip title="Edit">
                     <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
                       <FiEdit2 />
