@@ -1,7 +1,6 @@
 import React from 'react'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 const JobCard = ({job}) => {
   const navigate = useNavigate()
   
@@ -17,7 +16,7 @@ const JobCard = ({job}) => {
         <div
         className='text-light-primary flex flex-col'
         >
-           <h2 cls>{job.company}</h2>
+           <h2>{job.company}</h2>
            <h1 className='text-xl font-bold'>{`${job.title} (${job.experience})`}</h1>
            <div
            className='flex flex-col md:flex-row md:gap-4'

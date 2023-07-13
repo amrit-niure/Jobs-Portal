@@ -14,7 +14,7 @@ const Button = ({content,outline=false}) => {
     <div
     className={`${outline===true ? 'bg-transparent text-light-primary border-2 border-light-primary' : "bg-light-primary text-white"}  flex items-center justify-center  px-4 py-2 rounded-md cursor-pointer hover:bg-opacity-90  ${
         isClicked ? 'scale-95' : ''
-      }  transform transition-all duration-100 ease-in-out ${content==='Search Jobs' && 'h-[55px]'} `}
+      }  transform transition-all duration-100 ease-in-out `}
       onClick={handleClick}
     >
 {content}

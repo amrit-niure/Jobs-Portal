@@ -16,8 +16,8 @@ const PopularJobs = () => {
     >Listed Jobs</h1>
     </div>
 <div className='w-full flex flex-col gap-8'>
-{jobs.slice(0, 5).map((job)=>(
-  <JobCard job={job}/>
+{jobs.slice(0, 5).map((job,index)=>(
+  <JobCard key={index} job={job}/>
 ))}
 
 </div>

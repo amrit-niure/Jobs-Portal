@@ -55,7 +55,7 @@ app.use('/createjob', createJobRoute)
 app.use('/update', updateRoute)
 app.use('/alljobs',getJobsRoute )
 app.use('/listedjobs',getListingRoute )
-app.use('/filter',filterRoutes )
+app.use('/search',filterRoutes )
 app.use('/delete',deleteJobRoute)
 
 

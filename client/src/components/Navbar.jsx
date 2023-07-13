@@ -76,14 +76,14 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                 </div>
                 {/* Mobile nav */}
                 <div
-                    className='cursor-pointer md:hidden'
+                    className='cursor-pointer md:hidden '
                     onClick={() => setMobileMenu(prev => !prev)}
                 >
                     <HiOutlineMenuAlt1 className='text-3xl ' />
                 </div>
                 {mobileMenu &&
                     <div
-                        className='absolute right-[5rem] top-[50px] bg-light-tertiary p-[1rem] rounded-md'
+                        className='absolute right-[5rem] top-[50px] bg-light-tertiary p-[1rem] rounded-md z-10'
                     >
 
                         <div
