@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import JoditEditor, { Jodit } from 'jodit-react'
 const CreateJob = () => {
+  const endpoint = import.meta.env.VITE_ENDPOINT;
   const navigate = useNavigate()
   const { id } = useParams();
   console.log(id)
@@ -83,17 +84,15 @@ const CreateJob = () => {
   const createJob = async (values,onSubmitProps) => {
     try {
       console.log(values)
-      // const create = await axios.post('http://192.168.0.8:5000/createjob', values)
-      const create = await axios.post('http://10.35.0.165:5000/createjob', values)
+      const create = await axios.post(`${endpoint}/createjob`, values)
       if (create.data.success) {
         alert("Job Posted Sucessfully.")
-        // const response = await axios.get('http://192.168.0.8:5000/alljobs')
-        const response = await axios.get('http://10.35.0.165:5000/alljobs')
+        const response = await axios.get(`${endpoint}/alljobs`)
         if (response.data.success) {
           dispatch(setJobs({ allJobs: response.data.allJobs }))
         }
         onSubmitProps.resetForm()
-
+        navigate(`/listedjobs/${user._id}`)
       }
     } catch (error) {
       console.log(error)
@@ -102,17 +101,15 @@ const CreateJob = () => {
   const updatedJob = async (values,onSubmitProps) => {
     try {
       console.log(values)
-      // const create = await axios.post('http://192.168.0.8:5000/createjob', values)
-      const create = await axios.put(`http://10.35.0.165:5000/update/${updateJob._id}`, values)
+      const create = await axios.put(`${endpoint}/update/${updateJob._id}`, values)
       if (create.data.success) {
         alert("Job updated Sucessfully.")
-        // const response = await axios.get('http://192.168.0.8:5000/alljobs')
-        const response = await axios.get('http://10.35.0.165:5000/alljobs')
+        const response = await axios.get(`${endpoint}/alljobs`)
         if (response.data.success) {
           dispatch(setJobs({ allJobs: response.data.allJobs }))
         }
         onSubmitProps.resetForm()
-navigate(`/listedjobs/${updateJob.jobCreator}`)
+navigate(`/listedjobs/${user._id}`)
       }
     } catch (error) {
       console.log(error)

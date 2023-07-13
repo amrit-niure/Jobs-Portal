@@ -4,8 +4,7 @@ import Form from '../../components/Form'
 const Login = () => {
   return (
     <div>
-    
-      <div className='h-[89vh]'>
+      <div className='min-h-[88vh]  '>
       <Form />
       </div>
     </div>
