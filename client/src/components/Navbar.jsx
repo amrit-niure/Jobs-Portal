@@ -5,12 +5,12 @@ import { HiOutlineMenuAlt1 } from 'react-icons/hi'
 import { useNavigate } from 'react-router-dom'
 import Button from './Button'
 import { setLogout } from '../state'
-const Navbar = ({isAuth,setIsAuth}) => {
+const Navbar = ({ isAuth, setIsAuth }) => {
 
     const [mobileMenu, setMobileMenu] = React.useState(false)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { token,user } = useSelector((store) => store.userData)
+    const { token, user } = useSelector((store) => store.userData)
     useEffect(() => {
         if (token) {
             setIsAuth(true)
@@ -33,41 +33,46 @@ const Navbar = ({isAuth,setIsAuth}) => {
                 <div
                     className='hidden gap-4 md:flex '
                 >
-                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'  onClick={() => {
-                          navigate('/alljobs')
+                    {token && <div className='hidden gap-4 md:flex'>
+                        <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
+                            navigate('/alljobs')
                         }}>
-                        <h3>All Jobs</h3>
-                    </div>
-                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'  onClick={() => {
-                          navigate(`/listedjobs/${user._id}`)
+                            <h3>All Jobs</h3>
+                        </div>
+                        <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
+                            navigate(`/listedjobs/${user._id}`)
                         }}>
-                        <h3>My Listing</h3>
-                    </div>
+                            <h3>My Listing</h3>
+                        </div>
+                    </div>}
                     {isAuth ? (
-                    
-                    
-                    <div className='flex items-center gap-2 text-light-primary cursor-pointer'
-                        onClick={() => {
-                            dispatch(setLogout())
-                            setIsAuth(false)
-                        }
-                        }
-                    >
-                        <BiLogInCircle className='text-xl' />
-                        <h4
-                        >Logout</h4>
-                    </div>) : (
+
+
                         <div className='flex items-center gap-2 text-light-primary cursor-pointer'
+                            onClick={() => {
+                                dispatch(setLogout())
+                                setIsAuth(false)
+                            }
+                            }
+                        >
+                            <BiLogInCircle className='text-xl' />
+                            <h4
+                            >Logout</h4>
+                        </div>) : (
+
+                        <div className='flex items-center gap-2 text-light-primary cursor-pointer border-2 px-2 py-1 rounded-md border-light-primary'
                             onClick={() => navigate('/')}
                         >
                             <BiLogInCircle className='text-xl' />
                             <h4
                             >Login</h4>
                         </div>
+
                     )}
-                    <div onClick={() => navigate('../createjob')}>
-                        <Button content={"Post a Job"} />
-                    </div>
+                    {token &&
+                        <div onClick={() => navigate('../createjob')}>
+                            <Button content={"Post a Job"} />
+                        </div>}
                 </div>
                 {/* Mobile nav */}
                 <div
@@ -80,20 +85,38 @@ const Navbar = ({isAuth,setIsAuth}) => {
                     <div
                         className='absolute right-[5rem] top-[50px] bg-light-tertiary p-[1rem] rounded-md'
                     >
+
                         <div
                             className='flex flex-col gap-4'
                         >
-                            {isAuth ? (<div className='flex items-center gap-2 text-light-primary cursor-pointer'>
-                                <BiLogInCircle className='text-xl' />
-                                <h4
-                                    onClick={() => {
-                                        setMobileMenu(false)
-                                        dispatch(setLogout())
-                                        setIsAuth(false)
-                                        navigate('/')
-                                    }}
-                                >Logout</h4>
-                            </div>) : (
+                            {isAuth && <div className='gap-4 flex flex-col'>
+                                <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
+                                    navigate('/alljobs')
+                                    setMobileMenu(false)
+                                }}>
+                                    <h3>All Jobs</h3>
+                                </div>
+                                <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
+                                    navigate(`/listedjobs/${user._id}`)
+                                    setMobileMenu(false)
+                                    
+                                }}>
+                                    <h3>My Listing</h3>
+                                </div>
+                            </div>}
+                            {isAuth ? (
+
+                                <div className='flex items-center gap-2 text-light-primary cursor-pointer'>
+                                    <BiLogInCircle className='text-xl' />
+                                    <h4
+                                        onClick={() => {
+                                            setMobileMenu(false)
+                                            dispatch(setLogout())
+                                            setIsAuth(false)
+                                            navigate('/')
+                                        }}
+                                    >Logout</h4>
+                                </div>) : (
                                 <div className='flex items-center gap-2 text-light-primary cursor-pointer'>
                                     <BiLogInCircle className='text-xl' />
                                     <h4
@@ -104,6 +127,7 @@ const Navbar = ({isAuth,setIsAuth}) => {
                                     >Login</h4>
                                 </div>
                             )}
+                            {isAuth && 
                             <div
                                 onClick={() => {
                                     setMobileMenu(false)
@@ -112,6 +136,7 @@ const Navbar = ({isAuth,setIsAuth}) => {
                             >
                                 <Button content={"Post a Job"} />
                             </div>
+                            }
                         </div>
                     </div>
                 }

@@ -36,13 +36,14 @@ const columns = [
 
 
 export default function Table() {
+  const endpoint = import.meta.env.VITE_ENDPOINT;
   const [row, setRow] = useState([])
   const [loading, setLoading] = useState(true); // Add loading state
   useEffect(()=>{
     const fetchData = async ()=>{
       try {
         const userID = '64aa1e7fe484184213d14610'
-        const response = await axios.get(`http://192.168.0.8:5000/listedjobs/${userID}`)
+        const response = await axios.get(`${endpoint}/listedjobs/${userID}`)
         setRow(response.data.myListing)
         setLoading(false);
       } catch (err) {

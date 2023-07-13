@@ -6,11 +6,12 @@ import { setJobs } from '../../state'
 import axios from 'axios'
 
 const MyJobList = () => {
+  const endpoint = import.meta.env.VITE_ENDPOINT;
   const dispatch = useDispatch()
  useEffect(()=>{
 const fetchJobs = async() =>{
-  // const response = await axios.get('http://192.168.0.8:5000/alljobs')
-  const response = await axios.get('http://10.35.0.165:5000/alljobs')
+
+  const response = await axios.get(`${endpoint}/alljobs`)
   if(response.data.success){
     dispatch(setJobs({allJobs : response.data.allJobs}))
   }
