@@ -15,6 +15,8 @@ import CreateJob from './scenes/CreateJob/CreateJob'
 import ErrorPage from './scenes/Error/ErrorPage'
 import MyJobList from './scenes/MyJobList/MyJobList'
 import ListedJobs from './scenes/Listed Jobs/ListedJobs'
+import Categories from './scenes/Categories/Categories'
+import Test from './components/Test'
 
 
 function App() {
@@ -35,6 +37,8 @@ useEffect(() => {
             <Route path='createjob' element={isAuth ? <CreateJob /> : <ErrorPage />} />
             <Route path='createjob/:id' element={isAuth ? <CreateJob /> : <ErrorPage />} />
             <Route path='alljobs' element={isAuth ? <MyJobList /> : <ErrorPage />} />
+            <Route path='categories' element={isAuth ? <Categories /> : <ErrorPage />} />
+            <Route path='categories/:id' element={isAuth ? <Test /> : <ErrorPage />} />
             <Route path='listedjobs/:userId' element={isAuth ? <ListedJobs /> : <ErrorPage />} />
           </Route>
         </Routes>

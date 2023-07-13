@@ -1,7 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import lady from '../../assets/lady.png'
 import Button from '../../components/Button'
+import { useNavigate } from 'react-router-dom'
 const Hero = () => {
+  const navigate = useNavigate()
+  const [search,setSearch] = useState('')
+  const handleSubmit =async (event) => {
+    event.preventDefault();
+    navigate(`/alljobs?title=${search}`)
+    setSearch('');
+  };
+
   return (
     <div 
     className='w-full h-full  flex items-center justify-center  pb-[2rem]'
@@ -22,17 +31,21 @@ const Hero = () => {
               className='text-light-primary opacity-70'
             >Hand-picked opportunities to work from home, remotely, freelance, full-time, part-time, contract and internships.</p>
           </div>
-          <div
+          {/* search functionality */}
+          <form
             className='flex gap-4 flex-wrap items-center w-full'
+            onSubmit={handleSubmit}
           >
             <input
               type="text"
               name='search'
+              value={search}
               placeholder='Search Jobs.....'
               className='px-[1rem] focus:outline-none  py-[1rem] rounded-md text-light-primary '
+              onChange={(e) => setSearch(e.target.value)}
             />
             <button type='submit' ><Button content={'Search Jobs'} /> </button>
-          </div>
+          </form>
         </div>
 
       {/* Right Side / Top Side(mobile) */}
