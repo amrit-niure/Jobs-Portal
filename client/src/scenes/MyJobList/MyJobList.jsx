@@ -24,24 +24,36 @@ const MyJobList = () => {
   const [loading, setLoading] = useState(false)
   const [search,setSearch] = useState('')
 
+
   useEffect(() => {
     const fetchJobs = async () => {
-      const response = await axios.get(`${endpoint}/alljobs`)
+      setLoading(true);
+      const response = await axios.get(`${endpoint}/alljobs`);
       if (response.data.success) {
-        dispatch(setJobs({ allJobs: response.data.allJobs }))
+        dispatch(setJobs({ allJobs: response.data.allJobs }));
       }
-      const searchedJobs = jobs.filter((item) => item.title.toLowerCase() === title.toLowerCase())
-      if (isSearch) {
-        setLoading(true)
-        if (searchedJobs) {
-          setSearchedJobList(searchedJobs)
-          setLoading(false)
-        }
-      }
+      setLoading(false);
+    };
+  
+    fetchJobs();
+  }, []);
+  
+  useEffect(() => {
+    const filterJobs = () => {
+      const searchedJobs = jobs.filter(
+        (item) => item.title.toLowerCase() === title.toLowerCase()
+      );
+  
+      setSearchedJobList(searchedJobs);
+    };
+  
+    if (isSearch) {
+      setLoading(true);
+      filterJobs();
+      setLoading(false);
     }
-    fetchJobs()
-  }, [])
-
+  }, [title, jobs, isSearch]);
+  
 
   console.log(loading)
 
