@@ -10,6 +10,9 @@ const Form = () => {
     const endpoint = import.meta.env.VITE_ENDPOINT;
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [userError, setUserError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [loading,setLoading] = useState(false)
     const [pageType, setPageType] = useState("login")
     const isLogin = pageType === "login"
     const isRegister = pageType === "register"
@@ -34,17 +37,41 @@ const Form = () => {
         password: yup.string().required('Password is a required field'),
     })
 
+    // const register = async (values, onSubmitProps) => {
+    //     try {
+    //         const registered = await axios.post(`${endpoint}/auth/register`, values)
+    //         if (registered.data.success) {
+    //             setPageType('login')
+    //             onSubmitProps.resetForm()
+    //         }
+    //     } catch (error) {
+    //         if (error.response && error.response.status === 400) {
+    //             return  setErrorMessage(error.response.data.message);
+    //           } else {
+    //             console.error('Error logging in:', error.message);
+    //           }
+    //     }
+    // }
+
     const register = async (values, onSubmitProps) => {
         try {
-            const registered = await axios.post(`${endpoint}/auth/register`, values)
+            const registered = await axios.post(`${endpoint}/auth/register`, values);
             if (registered.data.success) {
-                setPageType('login')
-                onSubmitProps.resetForm()
+                setPageType('login');
+                onSubmitProps.resetForm();
+                setUserError('');
+                setEmailError('');
             }
         } catch (error) {
-            console.log(error)
+            if (error.response.data.message.userError) {
+                setUserError(error.response.data.message.userError);
+                setEmailError('');
+            } else if (error.response.data.message.emailError) {
+                setEmailError(error.response.data.message.emailError);
+                setUserError('');
+            }
         }
-    }
+    };
     const login = async (values, onSubmitProps) => {
         try {
             const loggedIn = await axios.post(`${endpoint}/auth/login`, values)
@@ -56,7 +83,7 @@ const Form = () => {
                 navigate('/')
             }
         } catch (error) {
-            console.log(error)
+            console.error('Error logging in:', error.message);
         }
     }
 
@@ -66,7 +93,6 @@ const Form = () => {
         if (isRegister) await register(values, onSubmitProps)
     }
 
-    
     return (
         <div className='h-full'>
             <div
@@ -77,8 +103,8 @@ const Form = () => {
             <div className='min-h-[78vh] py-4 flex'>
                 <Formik
                     onSubmit={handleFormSubmit}
-                    initialValues={ isRegister ? initialRegisterValues : initialLoginValues}
-                    validationSchema={ isRegister ? registerSchema : loginSchema}
+                    initialValues={isRegister ? initialRegisterValues : initialLoginValues}
+                    validationSchema={isRegister ? registerSchema : loginSchema}
                 >
                     {({
                         values,
@@ -110,29 +136,29 @@ const Form = () => {
                                         className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                                     />
                                     {touched.username && errors.username ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.username} </div>) : null}
+                                   { touched.username && isRegister && <span className='text-red-600 italic text-sm'>{userError}</span>}
                                 </div>
-
 
                                 {isRegister && (
                                     <>
 
 
-<div
-                    className='flex w-full flex-col gap-2'
-                  >
-                    <label htmlFor="type" className='text-lg  text-light-primary'>Role<span className="text-red-500">*</span></label>
-                    <select className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
-                      value={values.role}
-                      name='role'
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    >
-                      <option value="" disabled selected>Role</option>
-                      <option value="As an Employer">As an Employer</option>
-                      <option value="As a Job Seeker">As a Job Seeker</option>
-                    </select>
-                    {touched.role && errors.role ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.role} </div>) : null}
-                  </div>
+                                        <div
+                                            className='flex w-full flex-col gap-2'
+                                        >
+                                            <label htmlFor="type" className='text-lg  text-light-primary'>Role<span className="text-red-500">*</span></label>
+                                            <select className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
+                                                value={values.role}
+                                                name='role'
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            >
+                                                <option value="" disabled >Role</option>
+                                                <option value="employer">Employer</option>
+                                                <option value="jobSeeker">Job Seeker</option>
+                                            </select>
+                                            {touched.role && errors.role ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.role} </div>) : null}
+                                        </div>
 
                                         <div
                                             className='flex flex-col gap-2'
@@ -149,6 +175,7 @@ const Form = () => {
                                                 className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                                             />
                                             {touched.email && errors.email ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.email} </div>) : null}
+                                            <span className='text-red-600 italic text-sm'>{emailError}</span>
                                         </div>
 
                                     </>
@@ -179,6 +206,8 @@ const Form = () => {
                                     onClick={() => {
                                         setPageType(isLogin ? 'register' : 'login')
                                         resetForm()
+                                        setUserError('');
+                                        setEmailError('');
                                     }}
                                     className='text-sm underline cursor-pointer text-light-primary'
                                 >

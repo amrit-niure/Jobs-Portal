@@ -11,11 +11,16 @@ const Navbar = ({ isAuth, setIsAuth }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { token, user } = useSelector((store) => store.userData)
+    const [userType, setUserType] = useState('')
     useEffect(() => {
         if (token) {
             setIsAuth(true)
+            setUserType(user.role)
+
         }
     }, [token])
+    const isSeeker = userType === "jobSeeker"
+    const isEmployer = userType === "employer"
 
 
     return (
@@ -39,11 +44,11 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                         }}>
                             <h3>All Jobs</h3>
                         </div>
-                        <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
+                        {isEmployer && <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
                             navigate(`/listedjobs/${user._id}`)
                         }}>
                             <h3>My Listing</h3>
-                        </div>
+                        </div>}
                     </div>}
                     {isAuth ? (
 
@@ -70,9 +75,15 @@ const Navbar = ({ isAuth, setIsAuth }) => {
 
                     )}
                     {token &&
-                        <div onClick={() => navigate('../createjob')}>
-                            <Button content={"Post a Job"} />
-                        </div>}
+                        <div>
+                            {isEmployer && <div onClick={() => navigate('../createjob')}>
+                                <Button content={"Post a Job"} />
+                            </div>}
+                            {isSeeker && <div onClick={() => navigate('../appliedjobs')}>
+                                <Button content={"Applied Jobs"} />
+                            </div>}
+                        </div>
+                    }
                 </div>
                 {/* Mobile nav */}
                 <div
@@ -99,7 +110,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                                 <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
                                     navigate(`/listedjobs/${user._id}`)
                                     setMobileMenu(false)
-                                    
+
                                 }}>
                                     <h3>My Listing</h3>
                                 </div>
@@ -127,15 +138,15 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                                     >Login</h4>
                                 </div>
                             )}
-                            {isAuth && 
-                            <div
-                                onClick={() => {
-                                    setMobileMenu(false)
-                                    navigate('/createjob')
-                                }}
-                            >
-                                <Button content={"Post a Job"} />
-                            </div>
+                            {isAuth &&
+                                <div
+                                    onClick={() => {
+                                        setMobileMenu(false)
+                                        navigate('/createjob')
+                                    }}
+                                >
+                                    <Button content={"Post a Job"} />
+                                </div>
                             }
                         </div>
                     </div>
