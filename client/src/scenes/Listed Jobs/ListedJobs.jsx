@@ -42,7 +42,11 @@ const ListedJobs = () => {
      const deleted = await axios.delete(`${endpoint}/delete/${id}`)
 
   }
-
+// if(row.length ===0 ){
+//   return(
+//     <div className='w-full min-h-[78vh] flex items-center justify-center'>Nothing to show!</div>
+//   )
+// }
   return (
     <div className="text-light-primary">
       <div className="bg-light-lightBackground text-xl md:text-2xl text-center py-[1rem] font-semiBold">

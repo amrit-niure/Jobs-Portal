@@ -1,20 +1,28 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import Button from '../../components/Button'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+
 import parse from 'html-react-parser';
 const Details = () => {
-    const { jobs } = useSelector((store) => store.userData)
+    const { user,jobs, token } = useSelector((store) => store.userData)
     const { id } = useParams();
+    const navigate = useNavigate()
+    const [userType, setUserType] = useState('')
     const thisJob = jobs.find((found) => found._id === id)
-
+    // parsing content of Jodit editor i.e. description  
     const formatContent = (content) => {
         const parsedContent = parse(content);
         return parsedContent;
-      };
-    
-
-
+    };
+    useEffect(() => {
+        if (token) {
+            setUserType(user.role)
+        }
+    }, [token])
+    const isSeeker = userType === "jobSeeker"
+    const isEmployer = userType === "employer"
 
     return (
         <div className='text-light-primary'>
@@ -32,10 +40,12 @@ const Details = () => {
 
                             <Button content={"View Company"} outline={true} />
                         </div>
-                        <div>
-
+                        {isSeeker && <div onClick={() => navigate('/applyjob') }>
                             <Button content={"Apply"} />
-                        </div>
+                        </div>}
+                        {isEmployer && <div>
+                            <Button content={"Edit"} />
+                        </div>}
                     </div>
                     <div>
                         <ul className='text-light-primary'>
@@ -93,9 +103,9 @@ const Details = () => {
                                 <li>Presenting work in meetings with clients and management.</li>
                             </ul>
                         </div> */}
-            <div>
-            {formatContent(thisJob.description)}
-          </div>
+                            <div>
+                                {formatContent(thisJob.description)}
+                            </div>
                         </div>
                     </div>
                 </div>

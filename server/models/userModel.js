@@ -3,16 +3,18 @@ import mongoose from 'mongoose'
 const userSchema = mongoose.Schema({
     username : {
         type : String,
-        required : true
+        required : true,
+        unique : true
     },
     role : {
         type : String,
-        enum :["As an Employer","As a Job Seeker"],
+        enum :["employer","jobSeeker"],
         required : true
     },
     email : {
         type : String,
-        required : true
+        required : true,
+        unique : true
     },
     password : {
         type : String,
