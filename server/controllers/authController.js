@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken"
 import bcrypt from 'bcrypt'
-import User from "../models/userModel.js"
+import {User} from "../models/userModel.js"
 
 // register 
-export const register = async (req, res) => {
+export const employerRegister = async (req, res) => {
     try {
         const {
             username,
@@ -39,7 +39,7 @@ export const register = async (req, res) => {
 }
 
 
-export const login = async (req,res) =>{
+export const employerLogin = async (req,res) =>{
     try {
         const {username,password} = req.body
         const user = await User.findOne({username : username})

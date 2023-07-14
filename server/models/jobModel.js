@@ -10,12 +10,12 @@ const jobSchema = mongoose.Schema({
     jobCreator: {
         type: mongoose.Schema.Types.ObjectId,
     },
-    applicants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Replace 'User' with the appropriate model name if needed
-    }
-  ],
+//     applicants: [
+//     {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: 'User', // Replace 'User' with the appropriate model name if needed
+//     }
+//   ],
     company: {
         type: String,
         required: true

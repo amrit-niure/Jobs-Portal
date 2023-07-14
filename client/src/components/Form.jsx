@@ -37,25 +37,10 @@ const Form = () => {
         password: yup.string().required('Password is a required field'),
     })
 
-    // const register = async (values, onSubmitProps) => {
-    //     try {
-    //         const registered = await axios.post(`${endpoint}/auth/register`, values)
-    //         if (registered.data.success) {
-    //             setPageType('login')
-    //             onSubmitProps.resetForm()
-    //         }
-    //     } catch (error) {
-    //         if (error.response && error.response.status === 400) {
-    //             return  setErrorMessage(error.response.data.message);
-    //           } else {
-    //             console.error('Error logging in:', error.message);
-    //           }
-    //     }
-    // }
 
     const register = async (values, onSubmitProps) => {
         try {
-            const registered = await axios.post(`${endpoint}/auth/register`, values);
+            const registered = await axios.post(`${endpoint}/auth/employer/register`, values);
             if (registered.data.success) {
                 setPageType('login');
                 onSubmitProps.resetForm();
@@ -74,7 +59,7 @@ const Form = () => {
     };
     const login = async (values, onSubmitProps) => {
         try {
-            const loggedIn = await axios.post(`${endpoint}/auth/login`, values)
+            const loggedIn = await axios.post(`${endpoint}/auth/employer/login`, values)
             if (loggedIn.data.success) {
                 dispatch(setLogin({
                     user: loggedIn.data.user,
