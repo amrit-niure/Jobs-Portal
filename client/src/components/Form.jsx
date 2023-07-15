@@ -1,5 +1,6 @@
-import { Formik } from 'formik'
-import React, { useState } from 'react'
+import { ErrorMessage, Field, Formik } from 'formik'
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import * as yup from 'yup'
 import axios from 'axios'
 import Button from './Button'
@@ -12,13 +13,15 @@ const Form = () => {
     const dispatch = useDispatch()
     const [userError, setUserError] = useState('');
     const [emailError, setEmailError] = useState('');
-    const [loading,setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [isWho, setIsWho] = useState("")
     const [pageType, setPageType] = useState("login")
+    const [openModal, setOpenModal] = useState(false)
     const isLogin = pageType === "login"
     const isRegister = pageType === "register"
     const initialRegisterValues = {
         username: '',
-        role: '',
+        role: 'employee',
         email: '',
         password: '',
     }
@@ -28,7 +31,7 @@ const Form = () => {
     }
     const registerSchema = yup.object().shape({
         username: yup.string().required('Username is a required field'),
-        role: yup.string().required('Role is a required field'),
+        // role: yup.string().required('Role is a required field'),
         email: yup.string().required('Email is a required field'),
         password: yup.string().required('Password is a required field'),
     })
@@ -38,7 +41,8 @@ const Form = () => {
     })
 
 
-    const register = async (values, onSubmitProps) => {
+    const employerRegister = async (values, onSubmitProps) => {
+        console.log(values)
         try {
             const registered = await axios.post(`${endpoint}/auth/employer/register`, values);
             if (registered.data.success) {
@@ -57,7 +61,7 @@ const Form = () => {
             }
         }
     };
-    const login = async (values, onSubmitProps) => {
+    const employerLogin = async (values, onSubmitProps) => {
         try {
             const loggedIn = await axios.post(`${endpoint}/auth/employer/login`, values)
             if (loggedIn.data.success) {
@@ -74,12 +78,34 @@ const Form = () => {
 
 
     const handleFormSubmit = async (values, onSubmitProps) => {
-        if (isLogin) await login(values, onSubmitProps)
-        if (isRegister) await register(values, onSubmitProps)
+        console.log("Clicked")
+        if (isLogin) await employerLogin(values, onSubmitProps)
+        if (isRegister) await employerRegister(values, onSubmitProps)
     }
 
     return (
-        <div className='h-full'>
+        <div className='h-full relative'>
+            {openModal && (
+                <div className='inset-0 fixed w-full h-full flex items-center justify-center bg-light-lightBackground opacity-90 z-10 overflow-hidden border-2 rounded-md'>
+                    <div className="w-[300px] h-[50px] bg-white mx-auto rounded shadow-lg z-10 flex justify-around items-center"
+                        onClick={() => {
+                            setPageType('register')
+                            setOpenModal(false)
+                        }}>
+                        <div className=' h-full w-full flex items-center justify-center hover:bg-light-primary hover:text-white cursor-pointer  rounded-l-md'
+                            onClick={() => setIsWho('employer')}
+                        >
+                            <span>Employer</span>
+                        </div>
+                        <div className='h-full w-full flex items-center justify-center hover:bg-light-primary hover:text-white cursor-pointer  rounded-r-md'
+                            onClick={() => setIsWho('jobSeeker')}
+                        >
+                            <span>Job Seeker</span>
+                        </div>
+                    </div>
+                </div>
+
+            )}
             <div
                 className='bg-light-lightBackground px-[5rem] md:px-[10rem] text-xl md:text-2xl text-center py-[2rem] font-semiBold text-light-primary h-[6rem] '
             >
@@ -121,27 +147,33 @@ const Form = () => {
                                         className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                                     />
                                     {touched.username && errors.username ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.username} </div>) : null}
-                                   { touched.username && isRegister && <span className='text-red-600 italic text-sm'>{userError}</span>}
+                                    {touched.username && isRegister && <span className='text-red-600 italic text-sm'>{userError}</span>}
                                 </div>
 
                                 {isRegister && (
                                     <>
-
-
                                         <div
                                             className='flex w-full flex-col gap-2'
                                         >
+
                                             <label htmlFor="type" className='text-lg  text-light-primary'>Role<span className="text-red-500">*</span></label>
-                                            <select className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
+                                            {/* <select className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                                                 value={values.role}
                                                 name='role'
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             >
                                                 <option value="" disabled >Role</option>
-                                                <option value="employer">Employer</option>
+                                                <option value="employer" >Employer</option>
                                                 <option value="jobSeeker">Job Seeker</option>
-                                            </select>
+                                            </select> */}
+                                            {/* <input className='hidden'
+                                                value={values.role}
+                                                name='role'
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            /> */}
+ <Field name="role" type="text" />
                                             {touched.role && errors.role ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.role} </div>) : null}
                                         </div>
 
@@ -165,9 +197,7 @@ const Form = () => {
 
                                     </>
                                 )
-
                                 }
-
 
 
                                 <div
@@ -186,17 +216,17 @@ const Form = () => {
                                     />
                                     {touched.password && errors.password ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.password} </div>) : null}
                                 </div>
-                                <button type="submit" className='w-full text-lg '><Button content={isLogin ? "Login" : "Register"} /></button>
+                                <button type="submit" className='w-full text-lg'><Button content={isLogin ? "Login" : "Register"} /></button>
                                 <div
                                     onClick={() => {
-                                        setPageType(isLogin ? 'register' : 'login')
+
                                         resetForm()
                                         setUserError('');
                                         setEmailError('');
                                     }}
                                     className='text-sm underline cursor-pointer text-light-primary'
                                 >
-                                    {isLogin ? "Don't have an account ? Sign Up" : "Have an account ? Login"}
+                                    {isLogin ? <span onClick={() => setOpenModal(true)}>Don't have an account ? Sign Up</span> : <span onClick={() => setPageType("login")}>Have an account ? Login</span>}
                                 </div>
                             </form>
                         </div>
