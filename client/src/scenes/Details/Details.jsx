@@ -1,24 +1,31 @@
-import React,{useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '../../components/Button'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 
 import parse from 'html-react-parser';
 const Details = () => {
-    const { user,jobs, token } = useSelector((store) => store.userData)
+    const { user, jobs, token } = useSelector((store) => store.userData)
+
+
     const { id } = useParams();
     const navigate = useNavigate()
     const [userType, setUserType] = useState('')
+    const [isCreator, setIsCreator] = useState(false)
     const thisJob = jobs.find((found) => found._id === id)
     // parsing content of Jodit editor i.e. description  
     const formatContent = (content) => {
         const parsedContent = parse(content);
         return parsedContent;
     };
+
     useEffect(() => {
         if (token) {
             setUserType(user.role)
+        }
+        if (thisJob.jobCreator === user._id) {
+            setIsCreator(true)
         }
     }, [token])
     const isSeeker = userType === "jobSeeker"
@@ -37,13 +44,18 @@ const Details = () => {
                         className='w-full flex items-center justify-center gap-8'
                     >
                         <div>
+                            <a href={`${thisJob.website}`} target="_blank" rel="noopener noreferrer">
+                                <Button content={"View Company"} outline={true} />
+                            </a>
 
-                            <Button content={"View Company"} outline={true} />
+
+
+
                         </div>
-                        {isSeeker && <div onClick={() => navigate('/applyjob') }>
+                        {isSeeker && <div onClick={() => navigate(`/applyjob/${thisJob._id}`)}>
                             <Button content={"Apply"} />
                         </div>}
-                        {isEmployer && <div>
+                        {isCreator && <div onClick={() => navigate(`/createjob/${thisJob._id}`)}>
                             <Button content={"Edit"} />
                         </div>}
                     </div>

@@ -4,76 +4,99 @@ import '../../App.css'
 import Table from './Table';
 import { FiEye, FiEdit2 } from 'react-icons/fi'
 import { MdOutlineDeleteOutline } from 'react-icons/md'
+import { IoMdAdd } from 'react-icons/io'
 import { IconButton, Tooltip } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 const ListedJobs = () => {
+  const {userId} = useParams()
   const endpoint = import.meta.env.VITE_ENDPOINT;
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [row, setRow] = useState([])
   const [loading, setLoading] = useState(true); // Add loading state
-  const { user } = useSelector((store) => store.userData)
+  const { token,user } = useSelector((store) => store.userData)
+  const [userType,setuserType] = useState('')
+  useEffect(() => {
+    if(token){
+      if (user.role === 'employer') {
+        setuserType('employer')
+      }
+    else if (user.role === 'jobSeeker') {
+        setuserType('jobSeeker')
+      }
+
+    }
+  }, [token])
+  const isEmployer = userType === 'employer'
+  const isSeeker = userType === 'jobSeeker'
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${endpoint}/listedjobs/${user._id}`)
-        setRow(response.data.myListing)
+        const response = isEmployer ? (
+          await axios.get(`${endpoint}/listedjobs/${user._id}`)
+        ) : (
+          await axios.get(`${endpoint}/appliedjobs/${user._id}`)
+        )
+       isEmployer ? setRow(response.data.myListing) : setRow(response.data.appliedJobs)
         setLoading(false);
       } catch (err) {
         console.log(err)
       }
     }
     fetchData()
-  }, [])
+  }, [loading])
 
-
-  if (loading) {
-    // Show loading indicator while data is being fetched
-    return <div>Loading...</div>;
-  }
+console.log("Data Not fetching")
+if (loading) {
+  return <div>Loading...</div>;
+}
   console.log(row)
   const handelDelete = async (id) => {
-    // const deleted = await axios.delete(`http://192.168.0.8:5000/delete/${id}`)
-    //  const deleted = await axios.delete(`http://10.35.0.165:5000/delete/${id}`)
-    // const response = await axios.get(`http://localhost:5000/listedjobs/${user._id}`)
-     const deleted = await axios.delete(`${endpoint}/delete/${id}`)
-
+    const deleted = await axios.delete(`${endpoint}/delete/${id}`)
   }
-// if(row.length ===0 ){
-//   return(
-//     <div className='w-full min-h-[78vh] flex items-center justify-center'>Nothing to show!</div>
-//   )
-// }
+  if (row.length === 0) {
+    return (
+      <div className='w-full min-h-[78vh] flex items-center justify-center'>You have not posted any jobs. <span className='text-4xl text-light-primary cursor-pointer hover:text-blue-900' onClick={() => navigate('/createjob')}>
+
+
+        <Tooltip title="Post">
+          <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
+            <IoMdAdd />
+          </IconButton>
+        </Tooltip>
+      </span></div>
+    )
+  }
   return (
     <div className="text-light-primary">
       <div className="bg-light-lightBackground text-xl md:text-2xl text-center py-[1rem] font-semiBold">
-        <h2>My Listings</h2>
+       {isEmployer ? <h2>My Listings</h2> : <h2>Applied Jobs</h2>  }
       </div>
 
       <div className="w-full flex items-center justify-center p-4 lg:p-8 text-light-primary">
         <div className="overflow-x-auto">
-          <table className="w-full lg:w-[70vw] bg-white border border-gray-200">
-            <thead className="bg-gray-100 border-b text-lg">
-              <tr className="border-2">
-                <th className="border-r py-4 lg:py-[1rem] px-4 text-left">Job Title</th>
-                <th className="border-r py-4 lg:py-[1rem] px-4 text-left">Company</th>
-                <th className="border-r py-4 lg:py-[1rem] px-4 text-left">Type</th>
-                <th className="border-r py-4 lg:py-[1rem] px-4 text-left">Posted Date</th>
-                <th className="border-r py-4 lg:py-[1rem] px-4 text-left">Deadline</th>
-                <th className="border-r py-4 lg:py-[1rem] px-4 text-left">Actions</th>
+          <table className="w-full lg:w-[70vw] bg-white border border-gray-200 text-sm md:text-lg">
+            <thead className="bg-gray-100 border-b">
+              <tr className="border-2 ">
+                <th className="border-r py-2 lg:py-[.5rem] px-4 text-left font-semiBold whitespace-nowrap">Job </th>
+                <th className="border-r py-2 lg:py-[.5rem] px-4 text-left font-semiBold whitespace-nowrap">Company</th>
+                <th className="border-r py-2 lg:py-[.5rem] px-4 text-left font-semiBold whitespace-nowrap">Type</th>
+                <th className="border-r py-2 lg:py-[.5rem] px-4 text-left font-semiBold whitespace-nowrap ">Posted Date</th>
+                <th className="border-r py-2 lg:py-[.5rem] px-4 text-left font-semiBold whitespace-nowrap">{isEmployer ? "Deadline" : 'Applied Date'}</th>
+                <th className="border-r py-2 lg:py-[.5rem] px-4 text-left font-semiBold whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody>
               {row.map((item) => (
                 <tr className="border-2">
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.company}</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.title}</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.company }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.title }</td>
                   <td className="border-r py-4 lg:py-[1rem] px-4">{item.type}</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.createdAt.substring(0, 10)}</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.deadline.substring(0, 10)}</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.createdAt?.substring(0, 10)  }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.createdAt?.substring(0, 10)  }</td>
                   <td className="border-r py-4 lg:py-[1rem] px-4 w-[150px]">
                     <div className="flex items-center gap-4 text-xl">
                       <div onClick={() => navigate(`../details/${item._id}`)}>
@@ -110,8 +133,8 @@ const ListedJobs = () => {
       </div>
 
     </div>
-  );
-};
+  )
+}
 
 {/* <Table  /> */ }
 export default ListedJobs;

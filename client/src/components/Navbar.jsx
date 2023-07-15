@@ -79,7 +79,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                             {isEmployer && <div onClick={() => navigate('../createjob')}>
                                 <Button content={"Post a Job"} />
                             </div>}
-                            {isSeeker && <div onClick={() => navigate('../appliedjobs')}>
+                            {isSeeker && <div onClick={() => navigate(`/appliedjobs/${user._id}`)}>
                                 <Button content={"Applied Jobs"} />
                             </div>}
                         </div>

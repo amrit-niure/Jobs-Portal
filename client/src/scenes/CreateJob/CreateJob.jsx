@@ -15,7 +15,7 @@ const CreateJob = () => {
   console.log(id)
   const isUpdate = Boolean(id);
   // const isUpdate = false
-  
+
   console.log(isUpdate)
   const { user, jobs } = useSelector((store) => store.userData)
   const updateJob = isUpdate ? jobs.find((item) => item._id === id) : null
@@ -28,7 +28,7 @@ const CreateJob = () => {
   }
 
 
-  const initialValues =!updateJob ? {
+  const initialValues = !updateJob ? {
     jobCreator: `${user._id}`,
     company: '',
     website: '',
@@ -43,7 +43,7 @@ const CreateJob = () => {
     deadline: '',
     applicationLink: '',
     description: '',
-  }:{
+  } : {
     jobCreator: `${user._id}`,
     company: `${updateJob.company}`,
     website: `${updateJob.website}`,
@@ -81,7 +81,7 @@ const CreateJob = () => {
     description: yup.string().required("Required"),
   })
 
-  const createJob = async (values,onSubmitProps) => {
+  const createJob = async (values, onSubmitProps) => {
     try {
       console.log(values)
       const create = await axios.post(`${endpoint}/createjob`, values)
@@ -98,7 +98,7 @@ const CreateJob = () => {
       console.log(error)
     }
   }
-  const updatedJob = async (values,onSubmitProps) => {
+  const updatedJob = async (values, onSubmitProps) => {
     try {
       console.log(values)
       const create = await axios.put(`${endpoint}/update/${updateJob._id}`, values)
@@ -109,7 +109,7 @@ const CreateJob = () => {
           dispatch(setJobs({ allJobs: response.data.allJobs }))
         }
         onSubmitProps.resetForm()
-navigate(`/listedjobs/${user._id}`)
+        navigate(`/listedjobs/${user._id}`)
       }
     } catch (error) {
       console.log(error)
@@ -117,15 +117,15 @@ navigate(`/listedjobs/${user._id}`)
   }
 
 
-    const handleFormSubmit = async (values, onSubmitProps) => {
-      if (!isUpdate) {
-        await createJob(values, onSubmitProps);
-      } else {
-        await updatedJob(values, onSubmitProps); // Replace this with your logic for updating the job
-      }
-    };
-    
- 
+  const handleFormSubmit = async (values, onSubmitProps) => {
+    if (!isUpdate) {
+      await createJob(values, onSubmitProps);
+    } else {
+      await updatedJob(values, onSubmitProps); // Replace this with your logic for updating the job
+    }
+  };
+
+
   return (
     <div className='text-light-primary w-full'>
       <div
@@ -158,7 +158,6 @@ navigate(`/listedjobs/${user._id}`)
                 <div
                   className='flex w-full flex-col gap-2'
                 >
-
                   <input
                     type="hidden"
                     id='jobCreator'
@@ -166,10 +165,7 @@ navigate(`/listedjobs/${user._id}`)
                     value={values.jobCreator}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    placeholder='Job Creator'
-                    className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                   />
-                  {touched.jobCreator && errors.jobCreator ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.jobCreator} </div>) : null}
 
                 </div>
                 <div
@@ -197,8 +193,8 @@ navigate(`/listedjobs/${user._id}`)
                   >
                     <label htmlFor="website" className='text-lg  text-light-primary'>Company Website<span className="text-red-500">*</span></label>
                     <input
-                      type="text"
-                      // pattern="(http://.+)|(https://.+)|(www..+)"
+                      type="url"
+                      pattern="(https://.+)"
                       id='website'
                       name='website'
                       value={values.website}
@@ -397,10 +393,10 @@ navigate(`/listedjobs/${user._id}`)
                 >
                   <label htmlFor="title" className='text-lg  text-light-primary'>Application Link<span className="text-red-500">*</span></label>
                   <input
-                    type="text"
+                    type="url"
                     id='applicationLink'
                     name='applicationLink'
-                    // pattern="(http://.+)|(https://.+)|(www..+)"
+                    pattern="(https://.+)"
                     value={values.applicationLink}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -443,7 +439,7 @@ navigate(`/listedjobs/${user._id}`)
                 </div>
 
                 <button type='submit' className='w-[100px] self-end'>
-                  <Button content={"Post"} />
+                  <Button content={isUpdate ? 'Update' : 'Post'} />
                 </button>
               </form>
             </div>
