@@ -33,7 +33,6 @@ fetchJobs()
 <PopularJobs />
 <div className='w-full flex items-center justify-center pb-[2rem]'>
   <div className='w-[150px]' onClick={()=> navigate('/alljobs')}>
-
   <Button content={"View All Jobs"} outline={true}/>
   </div>
 </div>
