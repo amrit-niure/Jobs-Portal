@@ -29,3 +29,18 @@
 .overflow-x-auto::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
+
+
+
+@keyframes scaleDown {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.9);
+  }
+}
+
+.transition-scale-09 {
+  animation: scaleDown 0.3s ease-in-out;
+}

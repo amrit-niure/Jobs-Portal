@@ -39,7 +39,7 @@ const jobSchema = mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['Information Technology(IT)', 'Sales and Marketing', 'Hospitality and Tourism', 'Engineering', 'Healthcare and Medical', 'Support', 'Administrative and Clerical', 'Education and Teaching', 'Finance and Accounting', 'Customer Service', 'Manufacturing and Production', 'Legal', 'Media and Communication', 'Human Resources', 'Research and Development', 'Social Services', 'Others'],
+        enum: ['Information Technology(IT)', 'Sales and Marketing', 'Hospitality and Tourism', 'Engineering', 'Healthcare and Medical', 'Support Worker', 'Administrative and Clerical', 'Education and Teaching', 'Finance and Accounting', 'Customer Service', 'Manufacturing and Production', 'Legal', 'Media and Communication', 'Human Resources', 'Research and Development', 'Social Services', 'Others'],
         required: true
     },
     location: {

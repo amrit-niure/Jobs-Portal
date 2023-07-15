@@ -23,12 +23,23 @@ import Applied from './scenes/AppliedJobs/Applied'
 
 function App() {
   const [isAuth,setIsAuth] = useState(false)
-  const {token} =useSelector((store)=> store.userData)
-useEffect(() => {
-  if (token) {
-    setIsAuth(true)
-  }
-}, [token])
+  const {token, user} =useSelector((store)=> store.userData)
+  const [userType,setuserType] = useState('')
+  useEffect(() => {
+    if(token){
+      if (user.role === 'employer') {
+        setuserType('employer')
+        setIsAuth(true)
+      }
+    else if (user.role === 'jobSeeker') {
+        setuserType('jobSeeker')
+        setIsAuth(true)
+      }
+    }
+    
+  }, [token])
+  const isEmployer = userType === 'employer'
+  const isSeeker = userType === 'jobSeeker'
   return (
     <div>
       <BrowserRouter>
@@ -36,15 +47,15 @@ useEffect(() => {
           <Route element={<MainOutlet isAuth={isAuth} setIsAuth={setIsAuth}/>} >
             <Route index element={isAuth ? <Homepage /> : <Login />} />
             <Route path='details/:id' element={isAuth ? <Details /> : <ErrorPage />} />
-            <Route path='createjob' element={isAuth ? <CreateJob /> : <ErrorPage />} />
-            <Route path='createjob/:id' element={isAuth ? <CreateJob /> : <ErrorPage />} />
-            <Route path='applyjob' element={isAuth ? <Apply /> : <ErrorPage />} />
-            <Route path='appliedjobs' element={isAuth ? <Applied /> : <ErrorPage />} />
+            <Route path='createjob' element={isEmployer ? <CreateJob /> : <ErrorPage />} />
+            <Route path='createjob/:id' element={isEmployer ? <CreateJob /> : <ErrorPage />} />
+            <Route path='applyjob/:id' element={isSeeker ? <Apply /> : <ErrorPage />} />
+            {/* <Route path='appliedjobs/:userId' element={isSeeker ? <Applied /> : <ErrorPage />} /> */}
 
             <Route path='alljobs' element={isAuth ? <MyJobList /> : <ErrorPage />} />
             <Route path='categories' element={isAuth ? <Categories /> : <ErrorPage />} />
             <Route path='categories/:id' element={isAuth ? <Test /> : <ErrorPage />} />
-            <Route path='listedjobs/:userId' element={isAuth ? <ListedJobs /> : <ErrorPage />} />
+            <Route path={`${isEmployer ? '/listedjobs/:userId' : 'appliedjobs/:userId'}`} element={isAuth ? <ListedJobs /> : <ErrorPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

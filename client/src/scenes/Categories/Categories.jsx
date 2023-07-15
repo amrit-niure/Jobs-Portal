@@ -33,7 +33,9 @@ const Categories = () => {
 <div>
    <div className='flex flex-wrap gap-4 items-center justify-center max-w-[1200px]'>
 {categories.map((item) =>(
-  <div onClick={() => navigate(`/categories/${item}`)}>
+  <div onClick={() => 
+  navigate(`/categories/${item}`)
+  }>
     <CategoryCard  category={item}/>
   </div>
    

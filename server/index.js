@@ -16,6 +16,8 @@ import getListingRoute from './routes/getListingRoute.js'
 import filterRoutes from './routes/filterRoutes.js'
 import deleteJobRoute from './routes/deleteJobRoute.js'
 import updateRoute from './routes/updateRoute.js'
+import applyRoute from './routes/applyRoute.js'
+import getAppliedLJobsRoute from './routes/getAppliedJobsRoute.js'
 
 const app = express()
 dotenv.config()
@@ -52,6 +54,8 @@ const upload = multer({storage: storage});
 // Routes
 app.use('/auth', authRoutes)
 app.use('/createjob', createJobRoute)
+app.use('/apply', applyRoute)
+app.use('/appliedjobs', getAppliedLJobsRoute)
 app.use('/update', updateRoute)
 app.use('/alljobs',getJobsRoute )
 app.use('/listedjobs',getListingRoute )
