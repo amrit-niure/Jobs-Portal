@@ -11,6 +11,7 @@ export const employerRegister = async (req, res) => {
             email,
             password
         } = req.body
+        console.log(req.body)
         const existingUser = await User.findOne({ username });
         const existingEmail = await User.findOne({ email });
 

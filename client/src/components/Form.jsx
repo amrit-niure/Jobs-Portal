@@ -15,13 +15,14 @@ const Form = () => {
     const [emailError, setEmailError] = useState('');
     const [loading, setLoading] = useState(false)
     const [isWho, setIsWho] = useState("")
+    // const [role, setRole] = useState("employer");
     const [pageType, setPageType] = useState("login")
     const [openModal, setOpenModal] = useState(false)
     const isLogin = pageType === "login"
     const isRegister = pageType === "register"
     const initialRegisterValues = {
         username: '',
-        role: 'employee',
+        role: '',
         email: '',
         password: '',
     }
@@ -52,12 +53,18 @@ const Form = () => {
                 setEmailError('');
             }
         } catch (error) {
-            if (error.response.data.message.userError) {
-                setUserError(error.response.data.message.userError);
-                setEmailError('');
-            } else if (error.response.data.message.emailError) {
-                setEmailError(error.response.data.message.emailError);
-                setUserError('');
+            if (error.response) {
+                if (error.response.status === 500) {
+                    console.log('Internal Server Error:', error.response.data.error);
+                } else if (error.response.data.message.userError) {
+                    setUserError(error.response.data.message.userError);
+                    setEmailError('');
+                } else if (error.response.data.message.emailError) {
+                    setEmailError(error.response.data.message.emailError);
+                    setUserError('');
+                }
+            } else {
+                console.log('Error:', error.message);
             }
         }
     };
@@ -80,7 +87,7 @@ const Form = () => {
     const handleFormSubmit = async (values, onSubmitProps) => {
         console.log("Clicked")
         if (isLogin) await employerLogin(values, onSubmitProps)
-        if (isRegister) await employerRegister(values, onSubmitProps)
+        if (isRegister) await employerRegister({...values,role:isWho}, onSubmitProps)
     }
 
     return (
@@ -157,26 +164,16 @@ const Form = () => {
                                         >
 
                                             <label htmlFor="type" className='text-lg  text-light-primary'>Role<span className="text-red-500">*</span></label>
-                                            {/* <select className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
-                                                value={values.role}
+                                         
+                                            <input 
                                                 name='role'
+                                                type= 'hidden'
+                                                value={isWho}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                            >
-                                                <option value="" disabled >Role</option>
-                                                <option value="employer" >Employer</option>
-                                                <option value="jobSeeker">Job Seeker</option>
-                                            </select> */}
-                                            {/* <input className='hidden'
-                                                value={values.role}
-                                                name='role'
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            /> */}
- <Field name="role" type="text" />
-                                            {touched.role && errors.role ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.role} </div>) : null}
+                                            />
+                                           
                                         </div>
-
                                         <div
                                             className='flex flex-col gap-2'
                                         >
