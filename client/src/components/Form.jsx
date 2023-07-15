@@ -15,7 +15,7 @@ const Form = () => {
     const [emailError, setEmailError] = useState('');
     const [loading, setLoading] = useState(false)
     const [isWho, setIsWho] = useState("")
-    const [role, setRole] = useState("employee");
+    // const [role, setRole] = useState("employer");
     const [pageType, setPageType] = useState("login")
     const [openModal, setOpenModal] = useState(false)
     const isLogin = pageType === "login"
@@ -87,7 +87,7 @@ const Form = () => {
     const handleFormSubmit = async (values, onSubmitProps) => {
         console.log("Clicked")
         if (isLogin) await employerLogin(values, onSubmitProps)
-        if (isRegister) await employerRegister({...values,role}, onSubmitProps)
+        if (isRegister) await employerRegister({...values,role:isWho}, onSubmitProps)
     }
 
     return (
@@ -168,11 +168,11 @@ const Form = () => {
                                             <input 
                                                 name='role'
                                                 type= 'hidden'
-                                                value={role}
+                                                value={isWho}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
-                                            {touched.role && errors.role ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.role} </div>) : null}
+                                           
                                         </div>
                                         <div
                                             className='flex flex-col gap-2'
