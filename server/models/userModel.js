@@ -22,6 +22,6 @@ const userSchema = mongoose.Schema({
     }
 })
 
-const User = mongoose.model('User',userSchema)
+const JobSeeker = mongoose.model('JobSeeker',userSchema)
 const Employer = mongoose.model('Employer',userSchema)
-export {User, Employer}
+export {JobSeeker, Employer}

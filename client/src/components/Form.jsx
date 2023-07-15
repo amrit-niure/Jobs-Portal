@@ -42,10 +42,14 @@ const Form = () => {
     })
 
 
-    const employerRegister = async (values, onSubmitProps) => {
+    const register = async (values, onSubmitProps) => {
         console.log(values)
         try {
-            const registered = await axios.post(`${endpoint}/auth/employer/register`, values);
+            const registered = (isWho === 'employer') ? (
+                await axios.post(`${endpoint}/auth/employer/register`, values)
+            ) : (
+                await axios.post(`${endpoint}/auth/jobSeeker/register`, values)
+            )
             if (registered.data.success) {
                 setPageType('login');
                 onSubmitProps.resetForm();
@@ -68,15 +72,16 @@ const Form = () => {
             }
         }
     };
-    const employerLogin = async (values, onSubmitProps) => {
+    const login = async (values, onSubmitProps) => {
         try {
-            const loggedIn = await axios.post(`${endpoint}/auth/employer/login`, values)
+            const loggedIn = await axios.post(`${endpoint}/auth/login`, values)
             if (loggedIn.data.success) {
                 dispatch(setLogin({
                     user: loggedIn.data.user,
                     token: loggedIn.data.token,
                 }))
                 navigate('/')
+                onSubmitProps.resetForm()
             }
         } catch (error) {
             console.error('Error logging in:', error.message);
@@ -86,10 +91,9 @@ const Form = () => {
 
     const handleFormSubmit = async (values, onSubmitProps) => {
         console.log("Clicked")
-        if (isLogin) await employerLogin(values, onSubmitProps)
-        if (isRegister) await employerRegister({...values,role:isWho}, onSubmitProps)
+        if (isLogin) await login(values, onSubmitProps)
+        if (isRegister) await register({ ...values, role: isWho }, onSubmitProps)
     }
-
     return (
         <div className='h-full relative'>
             {openModal && (
@@ -160,19 +164,16 @@ const Form = () => {
                                 {isRegister && (
                                     <>
                                         <div
-                                            className='flex w-full flex-col gap-2'
+                                            className='hidden'
                                         >
-
-                                            <label htmlFor="type" className='text-lg  text-light-primary'>Role<span className="text-red-500">*</span></label>
-                                         
-                                            <input 
+                                            <input
                                                 name='role'
-                                                type= 'hidden'
+                                                type='hidden'
                                                 value={isWho}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
-                                           
+
                                         </div>
                                         <div
                                             className='flex flex-col gap-2'

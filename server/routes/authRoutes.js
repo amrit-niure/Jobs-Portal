@@ -1,9 +1,11 @@
 import express from 'express'
-import { employerRegister } from '../controllers/authController.js'
-import { employerLogin } from '../controllers/authController.js'
+import { employerRegister, jobSeekerRegister, login } from '../controllers/authController.js'
+// import { employerLogin ,jobSeekerLogin } from '../controllers/authController.js'
 const router = express.Router()
 
 router.post('/employer/register',employerRegister)
-router.post('/employer/login',employerLogin)
+router.post('/login',login)
+router.post('/jobSeeker/register',jobSeekerRegister)
+// router.post('/jobSeeker/login',jobSeekerLogin)
 
 export default router
