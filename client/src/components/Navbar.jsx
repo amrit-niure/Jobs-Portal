@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BiLogInCircle } from 'react-icons/bi'
 import { HiOutlineMenuAlt1 } from 'react-icons/hi'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate  } from 'react-router-dom'
 import Button from './Button'
 import { setLogout } from '../state'
 const Navbar = ({ isAuth, setIsAuth }) => {
 
     const [mobileMenu, setMobileMenu] = React.useState(false)
+    // const history = useHistory()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { token, user } = useSelector((store) => store.userData)
@@ -57,6 +58,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                             onClick={() => {
                                 dispatch(setLogout())
                                 setIsAuth(false)
+                                // history.push('/');
                             }
                             }
                         >
@@ -126,7 +128,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                                             setIsAuth(false)
                                             navigate('/')
                                         }}
-                                    >Logout</h4>
+                                    >Logout </h4>
                                 </div>) : (
                                 <div className='flex items-center gap-2 text-light-primary cursor-pointer'>
                                     <BiLogInCircle className='text-xl' />
