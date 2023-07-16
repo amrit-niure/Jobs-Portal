@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setJobs } from '../../state'
 import axios from 'axios'
 import { IconButton, Tooltip } from '@mui/material';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom';
+
 const MyJobList = () => {
   const navigate = useNavigate()
   const endpoint = import.meta.env.VITE_ENDPOINT;

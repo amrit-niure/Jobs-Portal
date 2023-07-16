@@ -32,6 +32,9 @@ const ListedJobs = () => {
   const isEmployer = userType === 'employer'
   const isSeeker = userType === 'jobSeeker'
 
+  const handelDelete = async (id) => {
+    const deleted = await axios.delete(`${endpoint}/delete/${id}`)
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,26 +52,25 @@ const ListedJobs = () => {
     fetchData()
   }, [loading])
 
-console.log("Data Not fetching")
+console.log(loading)
 if (loading) {
-  return <div>Loading...</div>;
+  return <div>Loading...</div>
 }
-  console.log(row)
-  const handelDelete = async (id) => {
-    const deleted = await axios.delete(`${endpoint}/delete/${id}`)
-  }
+console.log(row)
+
   if (row.length === 0) {
     return (
-      <div className='w-full min-h-[78vh] flex items-center justify-center'>You have not posted any jobs. <span className='text-4xl text-light-primary cursor-pointer hover:text-blue-900' onClick={() => navigate('/createjob')}>
-
-
-        <Tooltip title="Post">
-          <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
-            <IoMdAdd />
-          </IconButton>
-        </Tooltip>
-      </span></div>
-    )
+      <div className='w-full min-h-[78vh] flex items-center justify-center'>
+        {isEmployer ? "You have not posted any jobs." : "No applied jobs."}
+        <span className='text-4xl text-light-primary cursor-pointer hover:text-blue-900' onClick={() => navigate('/createjob')}>
+          <Tooltip title="Post">
+            <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
+              <IoMdAdd />
+            </IconButton>
+          </Tooltip>
+        </span>
+      </div>
+    );
   }
   return (
     <div className="text-light-primary">
@@ -92,21 +94,26 @@ if (loading) {
             <tbody>
               {row.map((item) => (
                 <tr className="border-2">
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.company }</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.title }</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.type}</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.createdAt?.substring(0, 10)  }</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{item.createdAt?.substring(0, 10)  }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.title : item.jobId.title }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.company : item.jobId.company }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.type : item.jobId.type }</td>
+                  {/* <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.createdAt?.substring(0, 10) : item.jobId.company   }</td> */}
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ item.createdAt.substring(0, 10) }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.deadline.substring(0, 10) : item.jobId.createdAt.substring(0, 10)  }</td>
                   <td className="border-r py-4 lg:py-[1rem] px-4 w-[150px]">
                     <div className="flex items-center gap-4 text-xl">
-                      <div onClick={() => navigate(`../details/${item._id}`)}>
+                      <div onClick={() => {
+                       isEmployer ? navigate(`../details/${item._id}`) : navigate(`../details/${item.jobId._id}`) 
+                        }}>
                         <Tooltip title="View">
                           <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
                             <FiEye />
                           </IconButton>
                         </Tooltip>
                       </div>
-                      <div onClick={() => navigate(`/createjob/${item._id}`)}>
+                      <div onClick={() => {
+                       isEmployer ? navigate(`/createjob/${item._id}`) : navigate(`/applyjob/${item.jobId._id}/?action=update`)
+                        }}>
                         <Tooltip title="Edit">
                           <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
                             <FiEdit2 />
@@ -115,7 +122,7 @@ if (loading) {
                       </div>
                       <div onClick={() => {
                         handelDelete(item._id);
-                        setRow((prevValue) => prevValue.filter((data) => data._id !== item._id));
+                        setRow((prevValue) => prevValue.filter((data) => isEmployer ? data._id !== item._id : data._id !== item.jobId._id));
                       }}>
                         <Tooltip title="Delete">
                           <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
