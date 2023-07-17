@@ -1,6 +1,9 @@
 import React from 'react'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
+import { GoLocation } from 'react-icons/go'
+import { MdWorkOutline } from 'react-icons/md'
+import { AiOutlineDollar } from 'react-icons/ai'
 const JobCard = ({job}) => {
   const navigate = useNavigate()
   
@@ -19,11 +22,19 @@ const JobCard = ({job}) => {
            <h2>{job.company}</h2>
            <h1 className='text-xl font-bold'>{`${job.title} (${job.experience})`}</h1>
            <div
-           className='flex flex-col md:flex-row md:gap-4'
+           className='flex flex-col md:flex-row flex-wrap md:gap-4'
            >
-            <span>Location : {job.location}</span>
-            <span>{job.type}</span>
-            <span>Salary : {job.salary}</span>
+   
+
+            <div className='border-2 w-fit bg-light-primary text-white bg-opacity-50 px-4 py-1 rounded-full cursor-pointer flex items-center gap-2'>
+              <span className='text-lg'><GoLocation /></span> Location : {job.location}
+            </div>
+            <div className='border-2 w-fit bg-light-primary text-white bg-opacity-50 px-4 py-1 rounded-full cursor-pointer flex items-center gap-2'>
+              <span className='text-lg'><MdWorkOutline /></span> {job.type}
+            </div>
+            <div className='border-2 w-fit bg-light-primary text-white bg-opacity-50 px-4 py-1 rounded-full cursor-pointer flex items-center gap-2'>
+              <span className='text-lg'><AiOutlineDollar /></span> Salary : {job.salary}
+            </div>
             </div>
         </div>
         </div>

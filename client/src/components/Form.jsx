@@ -41,7 +41,6 @@ const Form = () => {
         password: yup.string().required('Password is a required field'),
     })
 
-
     const register = async (values, onSubmitProps) => {
         console.log(values)
         try {

@@ -22,19 +22,26 @@ const Apply = () => {
   const navigate = useNavigate();
   const [loading,setLoading] = useState(true)
   const [allApplications,setAllApplications] = useState([])
-// useEffect(()=> {
-// const fetchApplications = async () => {
-//   try {
-//     const response = await axios.get(`${endpoint}/applications`)
-//     if(response.data.success){
-//       setAllApplications(response.data.allApplications)
-//       setLoading(false)
-//     }
-//   } catch (err) {
-//     console.log(err)
-//   }
-// }
-// },[])
+useEffect(()=> {
+const fetchApplications = async () => {
+  try {
+    const response = await axios.get(`${endpoint}/applications`)
+    if(response.data.success){
+      setAllApplications(response.data.allApplications)
+      setLoading(false)
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+fetchApplications()
+},[loading])
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+const thisApplication = isUpdate ? allApplications.find((item)=> item.jobId === id) : null
+console.log(allApplications)
+console.log(thisApplication)
   const initialValues = !isUpdate ? {
     applicant: `${user._id}`,
     creator: `${thisJob.jobCreator}`,
@@ -48,17 +55,17 @@ const Apply = () => {
     coverLetter: "",
     resume: "",
   } : {
-    applicant: `${user._id}`,
-    creator: `${thisJob.jobCreator}`,
-    jobId: `${thisJob._id}`,
-    name: "",
-    email: "",
-    address: "",
-    contact: "",
-    qualification: "",
-    links: "",
-    coverLetter: "",
-    resume: "",
+    applicant:`${thisApplication.applicant}`,
+    creator: `${thisApplication.creator}`,
+    jobId: `${thisApplication.jobId}`,
+    name: `${thisApplication.name}`,
+    email: `${thisApplication.email}`,
+    address:`${thisApplication.address}`,
+    contact:`${thisApplication.contact}`,
+    qualification:`${thisApplication.qualification}`,
+    links: `${thisApplication.links}`,
+    coverLetter: `${thisApplication.coverLetter}`,
+    resume: `${thisApplication.resume}`,
   }
   const validationSchema = yup.object().shape({
     applicant: yup.string().required("Required"),
@@ -72,22 +79,41 @@ const Apply = () => {
     // coverLetter: yup.string().required('Username is a required field'),
     // resume: yup.string().required('Username is a required field'),
   });
-
-  const handleFormSubmit = async (values, onSubmitProps) => {
-    try {
-      const response = await axios.post(`${endpoint}/apply/1`, values);
-      if (response.data.success) {
-        alert("Application submitted Sucessfully.");
-        onSubmitProps.resetForm();
-        navigate(`/appliedjobs/${user._id}`)
-      }
-    } catch (error) {
-      if (error.response.status === 500) {
-        console.log("Internal Server Error:", error.response.data.error);
-      } else {
-        console.log("Error:", error.message);
-      }
+const apply = async(values, onSubmitProps) => {
+  try {
+    const response = await axios.post(`${endpoint}/apply/${thisJob._id}`, values);
+    if (response.data.success) {
+      alert("Application submitted Sucessfully.");
+      onSubmitProps.resetForm();
+      navigate(`/appliedjobs/${user._id}`)
     }
+  } catch (error) {
+    if (error.response.status === 500) {
+      console.log("Internal Server Error:", error.response.data.error);
+    } else {
+      console.log("Error:", error.message);
+    }
+  }
+}
+const update = async(values, onSubmitProps) => {
+  try {
+    const response = await axios.put(`${endpoint}/updateapplication/${thisApplication._id}`, values);
+    if (response.data.success) {
+      alert("Application Updated Sucessfully.");
+      onSubmitProps.resetForm();
+      navigate(`/appliedjobs/${user._id}`)
+    }
+  } catch (error) {
+    if (error.response.status === 500) {
+      console.log("Internal Server Error:", error.response.data.error);
+    } else {
+      console.log("Error:", error.message);
+    }
+  }
+}
+  const handleFormSubmit = async (values, onSubmitProps) => {
+ if(!isUpdate) await apply(values,onSubmitProps) 
+ if(isUpdate) await update(values,onSubmitProps)
   };
 
   return (

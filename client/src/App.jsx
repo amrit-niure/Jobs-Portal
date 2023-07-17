@@ -16,9 +16,11 @@ import ErrorPage from './scenes/Error/ErrorPage'
 import MyJobList from './scenes/MyJobList/MyJobList'
 import ListedJobs from './scenes/Listed Jobs/ListedJobs'
 import Categories from './scenes/Categories/Categories'
-import Test from './components/Test'
+
 import Apply from './scenes/ApplyJob/Apply'
-import Applied from './scenes/AppliedJobs/Applied'
+import Specific from './scenes/SpecificCategory/Specific'
+import Applications from './scenes/Applications/Applications'
+
 
 
 function App() {
@@ -50,12 +52,11 @@ function App() {
             <Route path='createjob' element={isEmployer ? <CreateJob /> : <ErrorPage />} />
             <Route path='createjob/:id' element={isEmployer ? <CreateJob /> : <ErrorPage />} />
             <Route path='applyjob/:id' element={isSeeker ? <Apply /> : <ErrorPage />} />
-            {/* <Route path='appliedjobs/:userId' element={isSeeker ? <Applied /> : <ErrorPage />} /> */}
-
             <Route path='alljobs' element={isAuth ? <MyJobList /> : <ErrorPage />} />
             <Route path='categories' element={isAuth ? <Categories /> : <ErrorPage />} />
-            <Route path='categories/:id' element={isAuth ? <Test /> : <ErrorPage />} />
+            <Route path='categories/:id' element={isAuth ? <Specific /> : <ErrorPage />} />
             <Route path={`${isEmployer ? '/listedjobs/:userId' : 'appliedjobs/:userId'}`} element={isAuth ? <ListedJobs /> : <ErrorPage />} />
+            <Route path='applications/:id' element={isEmployer ? <Applications /> : <ErrorPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

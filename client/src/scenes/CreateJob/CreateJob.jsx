@@ -17,7 +17,7 @@ const CreateJob = () => {
   // const isUpdate = false
 
   console.log(isUpdate)
-  const { user, jobs } = useSelector((store) => store.userData)
+  const { user, jobs,token } = useSelector((store) => store.userData)
   const updateJob = isUpdate ? jobs.find((item) => item._id === id) : null
   console.log(updateJob)
 
@@ -26,10 +26,8 @@ const CreateJob = () => {
   const config = {
     placeholder: `Write clear Job Description with requirements, qualification and other additional information...`
   }
-
-
   const initialValues = !updateJob ? {
-    jobCreator: `${user._id}`,
+    // jobCreator: `${user._id}`,
     company: '',
     website: '',
     level: '',
@@ -44,7 +42,7 @@ const CreateJob = () => {
     applicationLink: '',
     description: '',
   } : {
-    jobCreator: `${user._id}`,
+    // jobCreator: `${user._id}`,
     company: `${updateJob.company}`,
     website: `${updateJob.website}`,
     level: `${updateJob.level}`,
@@ -61,11 +59,9 @@ const CreateJob = () => {
   }
 
   const jobSchema = yup.object().shape({
-    jobCreator: yup.string().required("Required"),
+    // jobCreator: yup.string().required("Required"),
     company: yup.string().min(3).required("Required"),
-    website: yup
-      .string()
-      .required("Required"),
+    website: yup.string().required("Required"),
     level: yup.string().required("Required"),
     title: yup.string().required("Required"),
     category: yup.string().required("Required"),
@@ -75,16 +71,14 @@ const CreateJob = () => {
     experience: yup.string().required("Required"),
     qualification: yup.string().required("Required"),
     deadline: yup.string().required("Required"),
-    applicationLink: yup
-      .string()
-      .required("Required"),
+    applicationLink: yup.string().required("Required"),
     description: yup.string().required("Required"),
   })
 
   const createJob = async (values, onSubmitProps) => {
     try {
       console.log(values)
-      const create = await axios.post(`${endpoint}/createjob`, values)
+      const create = await axios.post(`${endpoint}/createjob`, values ,{headers :{Authorization : `Bearer ${token}`}})
       if (create.data.success) {
         alert("Job Posted Sucessfully.")
         const response = await axios.get(`${endpoint}/alljobs`)
@@ -101,7 +95,7 @@ const CreateJob = () => {
   const updatedJob = async (values, onSubmitProps) => {
     try {
       console.log(values)
-      const create = await axios.put(`${endpoint}/update/${updateJob._id}`, values)
+      const create = await axios.put(`${endpoint}/update/${updateJob._id}`, values,{headers :{Authorization : `Bearer ${token}`}})
       if (create.data.success) {
         alert("Job updated Sucessfully.")
         const response = await axios.get(`${endpoint}/alljobs`)
@@ -158,14 +152,14 @@ const CreateJob = () => {
                 <div
                   className='flex w-full flex-col gap-2'
                 >
-                  <input
+                  {/* <input
                     type="hidden"
                     id='jobCreator'
                     name='jobCreator'
                     value={values.jobCreator}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                  />
+                  /> */}
 
                 </div>
                 <div
@@ -301,6 +295,9 @@ const CreateJob = () => {
                     className='flex w-full flex-col gap-2'
                   >
                     <label htmlFor="title" className='text-lg  text-light-primary'>Job Location<span className="text-red-500">*</span></label>
+                 
+
+           
                     <input
                       type="text"
                       id='location'
@@ -311,6 +308,7 @@ const CreateJob = () => {
                       placeholder='Location'
                       className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                     />
+                
                     {touched.location && errors.location ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.location} </div>) : null}
                   </div>
 
@@ -319,13 +317,13 @@ const CreateJob = () => {
                   >
                     <label htmlFor="title" className='text-lg  text-light-primary'>Salary<span className="text-red-500">*</span></label>
                     <input
-                      type="text"
+                      type="number"
                       id='salary'
                       name='salary'
                       value={values.salary}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder='Category'
+                      placeholder='eg. 100k,200k,etc...'
                       className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary'
                     />
                     {touched.salary && errors.salary ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.salary} </div>) : null}
@@ -409,20 +407,6 @@ const CreateJob = () => {
                   className='flex w-full flex-col gap-2'
                 >
                   <label htmlFor="title" className='text-lg  text-light-primary'>Job Description<span className="text-red-500">*</span></label>
-
-                  {/* <textarea
-                      type="text"
-                      id='description'
-                      name='description'
-                      value={values.description}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      placeholder='Job Description'
-                      className='px-[1rem] focus:outline-none border-2 py-[0.5rem] rounded-md text-light-primary h-32 max-h-[1000px]'
-                    />
-                    {touched.description && errors.description ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.description} </div>) : null}
-  */}
-
                   <div>
                     <JoditEditor
                       name="description"
@@ -431,13 +415,7 @@ const CreateJob = () => {
                       onChange={(value) => setFieldValue('description', value)}
                     />
                   </div>
-
-
-
-
-
                 </div>
-
                 <button type='submit' className='w-[100px] self-end'>
                   <Button content={isUpdate ? 'Update' : 'Post'} />
                 </button>

@@ -16,7 +16,7 @@ const Hero = () => {
     className='w-full h-full  flex items-center justify-center  pb-[2rem]'
     >
     <div
-      className=' w-[70vw] flex flex-col-reverse md:flex-row  items-center  gap-4  '
+      className=' w-[80vw] flex flex-col-reverse md:flex-row  items-center  gap-4  '
     >
       {/* Left Side / Bottom Side(mobile) */}
 

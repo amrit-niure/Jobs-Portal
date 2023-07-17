@@ -33,7 +33,12 @@ const ListedJobs = () => {
   const isSeeker = userType === 'jobSeeker'
 
   const handelDelete = async (id) => {
-    const deleted = await axios.delete(`${endpoint}/delete/${id}`)
+    try {
+      isEmployer ? await axios.delete(`${endpoint}/delete/${id}`) : await axios.delete(`${endpoint}/delete/application/${id}`) 
+    } catch (err) {
+      console.log(err)
+    }
+    
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -62,13 +67,13 @@ console.log(row)
     return (
       <div className='w-full min-h-[78vh] flex items-center justify-center'>
         {isEmployer ? "You have not posted any jobs." : "No applied jobs."}
-        <span className='text-4xl text-light-primary cursor-pointer hover:text-blue-900' onClick={() => navigate('/createjob')}>
+        { isEmployer && <span className='text-4xl text-light-primary cursor-pointer hover:text-blue-900' onClick={() => navigate('/createjob')}>
           <Tooltip title="Post">
             <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
               <IoMdAdd />
             </IconButton>
           </Tooltip>
-        </span>
+        </span>}
       </div>
     );
   }
@@ -121,8 +126,8 @@ console.log(row)
                         </Tooltip>
                       </div>
                       <div onClick={() => {
-                        handelDelete(item._id);
-                        setRow((prevValue) => prevValue.filter((data) => isEmployer ? data._id !== item._id : data._id !== item.jobId._id));
+                      handelDelete(item._id)
+                        setRow((prevValue) => prevValue.filter((data) => isEmployer ? data._id !== item._id : data._id !== item._id));
                       }}>
                         <Tooltip title="Delete">
                           <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>

@@ -15,11 +15,14 @@ import getJobsRoute from './routes/getJobsRoute.js'
 import getListingRoute from './routes/getListingRoute.js'
 import filterRoutes from './routes/filterRoutes.js'
 import deleteJobRoute from './routes/deleteJobRoute.js'
+import deleteApplicationRoute from './routes/deleteApplicationRoute.js'
 import updateRoute from './routes/updateRoute.js'
 import updateApplication from './routes/updateApplicationRoute.js'
 import applyRoute from './routes/applyRoute.js'
 import getAppliedLJobsRoute from './routes/getAppliedJobsRoute.js'
 import getApplicationsRoute from './routes/getApplicationsRoute.js'
+import getCategoryRoute from './routes/getCategoryRoute.js'
+import getMyApplicationsRoute from './routes/getMyApplicationsRoute.js'
 
 const app = express()
 dotenv.config()
@@ -65,6 +68,9 @@ app.use('/alljobs',getJobsRoute )
 app.use('/listedjobs',getListingRoute )
 app.use('/search',filterRoutes )
 app.use('/delete',deleteJobRoute)
+app.use('/delete',deleteApplicationRoute)
+app.use('/category',getCategoryRoute)
+app.use('/myapplications',getMyApplicationsRoute)
 
 
 
