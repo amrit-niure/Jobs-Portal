@@ -8,7 +8,9 @@ const jobSchema = mongoose.Schema({
         unique: true,
     },
     jobCreator: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.ObjectId,
+        required: true,
+        ref: 'Employer'
     },
 //     applicants: [
 //     {

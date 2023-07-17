@@ -33,12 +33,12 @@ const Details = () => {
     return (
         <div className='text-light-primary'>
             <div
-                className='bg-light-lightBackground px-[5rem] md:px-[10rem] text-xl md:text-2xl text-center py-[1rem] font-semiBold '
+                className='bg-light-lightBackground px-[2rem] md:px-[10rem] text-xl md:text-2xl text-center py-[1rem] font-semiBold '
             >
                 <h2 className=''>{thisJob.title}<span className='text-sm font-regular'>({thisJob.type})</span> - {thisJob.company}</h2>
             </div>
             <div className=' flex items-center justify-center border-2'>
-                <div className=' w-[100vw] h-full max-w-[1200px] py-[2rem] flex flex-col gap-4 '>
+                <div className='max-w-[1200px] w-[90vw] h-full py-[2rem] flex flex-col gap-4 '>
                     <div
                         className='w-full flex items-center justify-center gap-8'
                     >

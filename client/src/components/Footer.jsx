@@ -5,7 +5,7 @@ const Footer = () => {
     <div
     className='h-[4vh] bg-light-primary w-full flex items-center justify-center  text-white text-center'
     >
-         &copy; 2023 Jobs Portal. Amrit Niure
+         &copy; 2023 Job Hunt All Rights Reserved (Niure Amrit)
     </div>
   )
 }

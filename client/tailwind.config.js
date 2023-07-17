@@ -27,6 +27,7 @@ export default {
       },
       fontFamily: {
         myCustomFont: ['poppins', 'sans-serif'],
+        titleFont : ['Chela One']
       },
       fontWeight :{
         thin : '300',
