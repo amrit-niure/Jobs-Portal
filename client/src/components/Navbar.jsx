@@ -44,6 +44,11 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                 >
                     {token && <div className='hidden gap-4 md:flex'>
                         <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
+                            navigate('/')
+                        }}>
+                            <h3>Home</h3>
+                        </div>
+                        <div className='flex items-center gap-2 text-light-primary cursor-pointer' onClick={() => {
                             navigate('/alljobs')
                         }}>
                             <h3>All Jobs</h3>

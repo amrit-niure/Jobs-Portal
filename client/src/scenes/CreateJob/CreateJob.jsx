@@ -90,13 +90,13 @@ const CreateJob = () => {
       console.log(values)
       const create = await axios.put(`${endpoint}/update/${updateJob._id}`, values,{headers :{Authorization : `Bearer ${token}`}})
       if (create.data.success) {
-        alert("Job updated Sucessfully.")
+        setMessageModal(true)
         const response = await axios.get(`${endpoint}/alljobs`)
         if (response.data.success) {
           dispatch(setJobs({ allJobs: response.data.allJobs }))
         }
         onSubmitProps.resetForm()
-        navigate(`/listedjobs/${user._id}`)
+        
       }
     } catch (error) {
       console.log(error)
@@ -108,7 +108,7 @@ const CreateJob = () => {
     if (!isUpdate) {
       await createJob(values, onSubmitProps);
     } else {
-      await updatedJob(values, onSubmitProps); // Replace this with your logic for updating the job
+      await updatedJob(values, onSubmitProps)
     }
   };
 
@@ -405,7 +405,7 @@ const CreateJob = () => {
           )}
         </Formik>
       </div>
-      {messageModal && <MessageModal message={"Job Posted Sucessfully"} setMessageModal={setMessageModal} path={`/listedjobs/${user._id}`}/>}
+      {messageModal && <MessageModal message={!isUpdate ? "Job Posted Sucessfully" : "Job Updated Sucessfully"} setMessageModal={setMessageModal} path={`/listedjobs/${user._id}`}/>}
     </div>
   )
 }

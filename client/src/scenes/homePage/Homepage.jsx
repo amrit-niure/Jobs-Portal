@@ -25,7 +25,7 @@ fetchJobs()
     className='bg-light-tertiary flex flex-col items-center justify-center'
     >
       <div
-      className ='w-full h-full max-w-[1200px] border-2 '
+      className ='w-full h-full max-w-[1200px]  '
       > 
 
 <Hero />

@@ -65,7 +65,7 @@ const MyJobList = () => {
 
   if (!isSearch) {
     return (
-      <div className='text-light-primary flex flex-col gap-4'>
+      <div className='text-light-primary flex flex-col gap-4 pb-[2rem]'>
         <div className='bg-light-lightBackground text-xl md:text-2xl text-center py-[1rem] font-semiBold' >
           <h2>All Jobs </h2>
         </div>
