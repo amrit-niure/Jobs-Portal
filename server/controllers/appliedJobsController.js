@@ -5,7 +5,7 @@ export const getAppliedJobs = async (req,res) => {
     try {
         // 
         const {userId} = req.params
-        const appliedJobs = await Application.find({applicant : userId}).populate('jobId')
+        const appliedJobs = await Application.find({applicant : userId}).populate("jobId")
         if(!appliedJobs){
             res.status(200).json({msg : `There is no applications of ID : ${userId} in the database`})
           }
