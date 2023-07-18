@@ -65,7 +65,7 @@ const MyJobList = () => {
 
   if (!isSearch) {
     return (
-      <div className='text-light-primary flex flex-col gap-4'>
+      <div className='text-light-primary flex flex-col gap-4 pb-[2rem]'>
         <div className='bg-light-lightBackground text-xl md:text-2xl text-center py-[1rem] font-semiBold' >
           <h2>All Jobs </h2>
         </div>
@@ -131,8 +131,8 @@ const MyJobList = () => {
             <div className='text-center md:text-left w-full max-w-[1200px]'>
             <span> Jobs for <span className='underline italic'>{title} </span> </span>
             </div>
-            <div className='w-full h-full  flex flex-col gap-4 items-center justify-center'>
-              <div className='w-full max-w-[1200px]  py-[1rem] px-[4rem] xl:px-0 flex flex-col gap-4 items-center justify-center'>
+            <div className='w-full border-2 h-full  flex flex-col gap-4 items-center justify-center'>
+              <div className='w-full   py-[1rem] px-[4rem] xl:px-0 flex flex-col gap-4 items-center justify-center'>
                 {searchedJobsList.map((job) => (
                   <JobCard job={job} />
                 ))}
@@ -140,8 +140,8 @@ const MyJobList = () => {
             </div>
           </div>
           ) : (
-            <div className='w-full h-[81vh]  flex gap-1 items-center justify-center'>
-              <div className='w-full h-full border-2 flex gap-1 items-center justify-center'>
+            <div className='w-full h-[60vh]  flex gap-1 items-center justify-center'>
+              <div className='w-full h-full flex gap-1 items-center justify-center'>
 
               Sorry, no Jobs Found for <span className='underline italic'>{title} </span>.
               </div>

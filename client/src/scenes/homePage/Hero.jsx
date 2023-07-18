@@ -41,7 +41,7 @@ const Hero = () => {
               name='search'
               value={search}
               placeholder='Search Jobs.....'
-              className='px-[1rem] focus:outline-none  py-[1rem] rounded-md text-light-primary '
+              className='px-[1rem] focus:outline-none  py-[1rem] h-[40px] rounded-md text-light-primary '
               onChange={(e) => setSearch(e.target.value)}
             />
             <button type='submit' ><Button content={'Search Jobs'} /> </button>

@@ -7,13 +7,23 @@ import Button from './Button'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setLogin } from '../state/index.js'
+import { BsFillPersonCheckFill } from 'react-icons/bs'
+import { PiPersonSimpleRunBold } from 'react-icons/pi'
+import { FaUserAlt } from 'react-icons/fa'
+import { RiLockPasswordFill } from 'react-icons/ri'
+import { MdEmail } from 'react-icons/md'
+import MessageModal from './MessageModal';
+
+
 const Form = () => {
     const endpoint = import.meta.env.VITE_ENDPOINT;
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [loginError, setLoginError] = useState('')
     const [userError, setUserError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [loading, setLoading] = useState(false)
+    const [messageModal, setMessageModal] = useState(false)
     const [isWho, setIsWho] = useState("")
     // const [role, setRole] = useState("employer");
     const [pageType, setPageType] = useState("login")
@@ -31,9 +41,9 @@ const Form = () => {
         password: '',
     }
     const registerSchema = yup.object().shape({
-        username: yup.string().required('Username is a required field'),
+        username: yup.string().required('Username is a required'),
         // role: yup.string().required('Role is a required field'),
-        email: yup.string().required('Email is a required field'),
+        email: yup.string().required('Email is a required'),
         password: yup.string().required('Password is a required field'),
     })
     const loginSchema = yup.object().shape({
@@ -71,6 +81,30 @@ const Form = () => {
             }
         }
     };
+    // const login = async (values, onSubmitProps) => {
+    //     try {
+    //         const loggedIn = await axios.post(`${endpoint}/auth/login`, values)
+    //         if (loggedIn.data.success) {
+    //             dispatch(setLogin({
+    //                 user: loggedIn.data.user,
+    //                 token: loggedIn.data.token,
+    //             }))
+    //             navigate('/')
+    //             onSubmitProps.resetForm()
+    //         }
+    //         if(!loggedIn.response.success){
+    //             setLoginError(loggedIn.data.message)
+    //         }
+    //         if(loginError){
+    //             alert(loginError)
+    //         }
+    //     } catch (error) {
+    //         console.error('Error logging in:', error.message);
+    //     }
+    // }
+
+
+
     const login = async (values, onSubmitProps) => {
         try {
             const loggedIn = await axios.post(`${endpoint}/auth/login`, values)
@@ -81,17 +115,32 @@ const Form = () => {
                 }))
                 navigate('/')
                 onSubmitProps.resetForm()
+            } else {
+                alert(loggedIn.data.message);
             }
         } catch (error) {
-            console.error('Error logging in:', error.message);
+            if (error.response) {
+                if (error.response.status === 400) {
+                    setLoginError(error.response.data.message)
+                    setMessageModal(true)
+                }
+                console.log(loginError)
+            }
+            else {
+                console.log('Error occoured:', error);
+            }
         }
     }
 
 
+
+
     const handleFormSubmit = async (values, onSubmitProps) => {
+
         console.log("Clicked")
         if (isLogin) await login(values, onSubmitProps)
         if (isRegister) await register({ ...values, role: isWho }, onSubmitProps)
+
     }
     return (
         <div className='h-full relative'>
@@ -102,14 +151,16 @@ const Form = () => {
                             setPageType('register')
                             setOpenModal(false)
                         }}>
-                        <div className=' h-full w-full flex items-center justify-center hover:bg-light-primary hover:text-white cursor-pointer  rounded-l-md'
+                        <div className=' h-full w-full flex items-center justify-center hover:bg-light-primary hover:text-white cursor-pointer gap-2  rounded-l-md'
                             onClick={() => setIsWho('employer')}
                         >
+                            <BsFillPersonCheckFill className='text-xl' />
                             <span>Employer</span>
                         </div>
-                        <div className='h-full w-full flex items-center justify-center hover:bg-light-primary hover:text-white cursor-pointer  rounded-r-md'
+                        <div className='h-full w-full flex items-center justify-center hover:bg-light-primary hover:text-white cursor-pointer gap-1 rounded-r-md'
                             onClick={() => setIsWho('jobSeeker')}
                         >
+                            <PiPersonSimpleRunBold className='text-xl ' />
                             <span>Job Seeker</span>
                         </div>
                     </div>
@@ -139,13 +190,16 @@ const Form = () => {
                         <div className='w-full flex items-center justify-center'>
 
                             <form
-                                className='w-[400px] md:w-[500px] border-2 py-[2rem] px-[1rem] rounded-md flex flex-col gap-8 shadow-lg'
+                                className='w-[400px] md:w-[500px] border-2 py-[2rem] px-[1rem] rounded-md flex flex-col gap-4 shadow-lg'
                                 onSubmit={handleSubmit}
                             >
                                 <div
-                                    className='flex flex-col gap-2'
+                                    className='flex flex-col gap-2  text-light-primary'
                                 >
-                                    <label htmlFor="username" className='text-lg  text-light-primary'>Username<span className="text-red-500">*</span></label>
+                                    <div className='flex items-center gap-2 pl-1'>
+                                        <FaUserAlt />
+                                        <label htmlFor="username" className='text-md  tracking-wide'>Username<span className="text-red-500">*</span></label>
+                                    </div>
                                     <input
                                         type="text"
                                         id='username'
@@ -175,9 +229,13 @@ const Form = () => {
 
                                         </div>
                                         <div
-                                            className='flex flex-col gap-2'
+                                            className='flex flex-col gap-2  text-light-primary'
                                         >
-                                            <label htmlFor="email" className='text-lg  text-light-primary'>Email<span className="text-red-500">*</span></label>
+
+                                            <div className='flex items-center gap-2 pl-1 '>
+                                                <MdEmail />
+                                                <label htmlFor="email" className='text-lg '>Email<span className="text-red-500">*</span></label>
+                                            </div>
                                             <input
                                                 type="text"
                                                 id='email'
@@ -198,9 +256,12 @@ const Form = () => {
 
 
                                 <div
-                                    className='flex flex-col gap-2'
+                                    className='flex flex-col gap-2 text-light-primary'
                                 >
-                                    <label htmlFor="password" className='text-lg  text-light-primary'>Password <span className="text-red-500">*</span></label>
+                                    <div className='flex items-center gap-2 pl-1  ' >
+                                        <RiLockPasswordFill />
+                                        <label htmlFor="password" className='text-lg  '>Password <span className="text-red-500">*</span></label>
+                                    </div>
                                     <input
                                         type="password"
                                         id='password'
@@ -214,6 +275,8 @@ const Form = () => {
                                     {touched.password && errors.password ? (<div className='text-red-500 py-[0rem] text-sm '>{errors.password} </div>) : null}
                                 </div>
                                 <button type="submit" className='w-full text-lg'><Button content={isLogin ? "Login" : "Register"} /></button>
+                                
+
                                 <div
                                     onClick={() => {
 
@@ -224,12 +287,15 @@ const Form = () => {
                                     className='text-sm underline cursor-pointer text-light-primary'
                                 >
                                     {isLogin ? <span onClick={() => setOpenModal(true)}>Don't have an account ? Sign Up</span> : <span onClick={() => setPageType("login")}>Have an account ? Login</span>}
+
+
                                 </div>
                             </form>
                         </div>
                     )}
                 </Formik>
             </div>
+          {messageModal &&  <MessageModal message={loginError} setMessageModal={setMessageModal} />}
         </div>
     )
 }

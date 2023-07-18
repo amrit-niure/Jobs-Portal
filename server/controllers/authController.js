@@ -88,7 +88,7 @@ export const login = async (req, res) => {
         if (!user) {
             const jobSeekerUser = await JobSeeker.findOne({ username: username });
             if (!jobSeekerUser) {
-                return res.status(400).json({ success: false, message: 'Sorry, User Does not Exist...!' });
+                return res.status(400).json({ success: false, message: 'User Does not Exist!' });
             }
             user = jobSeekerUser;
         }
@@ -96,7 +96,7 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.status(400).json({ success: false, msg: "Invalid Credentials" });
+            return res.status(400).json({ success: false, message: "Password does not match!" });
         }
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
