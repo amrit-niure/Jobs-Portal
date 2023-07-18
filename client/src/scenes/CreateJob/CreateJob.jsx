@@ -8,26 +8,21 @@ import { setJobs } from '../../state'
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import JoditEditor, { Jodit } from 'jodit-react'
+import MessageModal from '../../components/MessageModal'
 const CreateJob = () => {
+  const [messageModal, setMessageModal] = useState(false)
   const endpoint = import.meta.env.VITE_ENDPOINT;
   const navigate = useNavigate()
   const { id } = useParams();
   console.log(id)
   const isUpdate = Boolean(id);
-  // const isUpdate = false
-
-  console.log(isUpdate)
   const { user, jobs,token } = useSelector((store) => store.userData)
   const updateJob = isUpdate ? jobs.find((item) => item._id === id) : null
-  console.log(updateJob)
-
   const dispatch = useDispatch()
-
   const config = {
     placeholder: `Write clear Job Description with requirements, qualification and other additional information...`
   }
   const initialValues = !updateJob ? {
-    // jobCreator: `${user._id}`,
     company: '',
     website: '',
     level: '',
@@ -42,7 +37,6 @@ const CreateJob = () => {
     applicationLink: '',
     description: '',
   } : {
-    // jobCreator: `${user._id}`,
     company: `${updateJob.company}`,
     website: `${updateJob.website}`,
     level: `${updateJob.level}`,
@@ -59,7 +53,6 @@ const CreateJob = () => {
   }
 
   const jobSchema = yup.object().shape({
-    // jobCreator: yup.string().required("Required"),
     company: yup.string().min(3).required("Required"),
     website: yup.string().required("Required"),
     level: yup.string().required("Required"),
@@ -80,13 +73,13 @@ const CreateJob = () => {
       console.log(values)
       const create = await axios.post(`${endpoint}/createjob`, values ,{headers :{Authorization : `Bearer ${token}`}})
       if (create.data.success) {
-        alert("Job Posted Sucessfully.")
+        setMessageModal(true)
         const response = await axios.get(`${endpoint}/alljobs`)
         if (response.data.success) {
           dispatch(setJobs({ allJobs: response.data.allJobs }))
         }
         onSubmitProps.resetForm()
-        navigate(`/listedjobs/${user._id}`)
+        
       }
     } catch (error) {
       console.log(error)
@@ -152,15 +145,6 @@ const CreateJob = () => {
                 <div
                   className='flex w-full flex-col gap-2'
                 >
-                  {/* <input
-                    type="hidden"
-                    id='jobCreator'
-                    name='jobCreator'
-                    value={values.jobCreator}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  /> */}
-
                 </div>
                 <div
                   className='flex gap-4 flex-col md:flex-row md:gap-8'
@@ -295,9 +279,6 @@ const CreateJob = () => {
                     className='flex w-full flex-col gap-2'
                   >
                     <label htmlFor="title" className='text-lg  text-light-primary'>Job Location<span className="text-red-500">*</span></label>
-                 
-
-           
                     <input
                       type="text"
                       id='location'
@@ -424,6 +405,7 @@ const CreateJob = () => {
           )}
         </Formik>
       </div>
+      {messageModal && <MessageModal message={"Job Posted Sucessfully"} setMessageModal={setMessageModal} path={`/listedjobs/${user._id}`}/>}
     </div>
   )
 }

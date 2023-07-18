@@ -37,7 +37,7 @@ const Details = () => {
             >
                 <h2 className=''>{thisJob.title}<span className='text-sm font-regular'>({thisJob.type})</span> - {thisJob.company}</h2>
             </div>
-            <div className=' flex items-center justify-center border-2'>
+            <div className=' flex items-center justify-center '>
                 <div className='max-w-[1200px] w-[90vw] h-full py-[2rem] flex flex-col gap-4 '>
                     <div
                         className='w-full flex items-center justify-center gap-8'

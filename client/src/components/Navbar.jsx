@@ -66,7 +66,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                             onClick={() => {
                                 dispatch(setLogout())
                                 setIsAuth(false)
-                                // history.push('/');
+                                navigate('/')
                             }
                             }
                         >
@@ -75,7 +75,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                             >Logout</h4>
                         </div>) : (
 
-                        <div className='flex items-center gap-2 text-light-primary cursor-pointer border-2 px-2 py-1 rounded-md border-light-primary'
+                        <div className='flex items-center gap-2 text-light-primary cursor-pointer border-2 px-2 py-1 rounded-md border-light-primary hover:bg-light-primary hover:text-white'
                             onClick={() => navigate('/')}
                         >
                             <BiLogInCircle className='text-xl' />
@@ -153,13 +153,13 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                                     {isEmployer && <div onClick={() => {
                                         navigate('../createjob')
                                         setMobileMenu(false)
-                                        }}>
+                                    }}>
                                         <Button content={"Post a Job"} />
                                     </div>}
                                     {isSeeker && <div onClick={() => {
                                         navigate(`/appliedjobs/${user._id}`)
                                         setMobileMenu(false)
-                                        }}>
+                                    }}>
                                         <Button content={"Applied Jobs"} />
                                     </div>}
                                 </div>
