@@ -61,6 +61,7 @@ console.log(loading)
 if (loading) {
   return <div>Loading...</div>
 }
+
 console.log(row)
 
   if (row.length === 0) {
@@ -99,16 +100,16 @@ console.log(row)
             <tbody>
               {row.map((item) => (
                 <tr className="border-2">
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.title : item.jobId.title }</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.company : item.jobId.company }</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.type : item.jobId.type }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.title : item.jobId?.title ?? 'Sorry'}</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.company : item.jobId?.company  ?? "This job was"}</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.type : item.jobId?.type ?? "Deleted"}</td>
                   {/* <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.createdAt?.substring(0, 10) : item.jobId.company   }</td> */}
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{ item.createdAt.substring(0, 10) }</td>
-                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.deadline.substring(0, 10) : item.jobId.createdAt.substring(0, 10)  }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{ isEmployer ? item.createdAt.substring(0, 10) :item.jobId?.createdAt.substring(0, 10) ?? "Try Another One" }</td>
+                  <td className="border-r py-4 lg:py-[1rem] px-4">{  item.createdAt.substring(0, 10)  }</td>
                   <td className="border-r py-4 lg:py-[1rem] px-4 w-[150px]">
                     <div className="flex items-center gap-4 text-xl">
                       <div onClick={() => {
-                       isEmployer ? navigate(`../details/${item._id}`) : navigate(`../details/${item.jobId._id}`) 
+                       isEmployer ? navigate(`../details/${item._id}`) : navigate(`../details/${item.jobId?._id}`) 
                         }}>
                         <Tooltip title="View">
                           <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
@@ -117,7 +118,7 @@ console.log(row)
                         </Tooltip>
                       </div>
                       <div onClick={() => {
-                       isEmployer ? navigate(`/createjob/${item._id}`) : navigate(`/applyjob/${item.jobId._id}/?action=update`)
+                       isEmployer ? navigate(`/createjob/${item._id}`) : navigate(`/applyjob/${item.jobId?._id}/?action=update`)
                         }}>
                         <Tooltip title="Edit">
                           <IconButton style={{ fontSize: '1.25rem', color: '#861D88' }}>
