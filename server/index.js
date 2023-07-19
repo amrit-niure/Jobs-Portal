@@ -57,9 +57,8 @@ const upload = multer({storage: storage});
 
 
 // Routes
-app.use('/', (req,res,next) => {
+app.get('/', (req,res,) => {
     res.json({success: true, message : "Sucessfully Hit the target."})
-    next()
 })
 app.use('/auth', authRoutes)
 app.use('/createjob', createJobRoute)
