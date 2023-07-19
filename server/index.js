@@ -57,6 +57,9 @@ const upload = multer({storage: storage});
 
 
 // Routes
+app.use('/', (req,res) => {
+    res.json({success: true, message : "Sucessfully Hit the target."})
+})
 app.use('/auth', authRoutes)
 app.use('/createjob', createJobRoute)
 app.use('/apply', applyRoute)
@@ -79,7 +82,8 @@ const PORT = process.env.PORT || 8080
 const connectDB = async () => {
     try {
         // connection string 
-        const con = await mongoose.connect('mongodb://127.0.0.1:27017/jobsportal', {
+        // const con = await mongoose.connect('mongodb://127.0.0.1:27017/jobsportal', {
+        const con = await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
